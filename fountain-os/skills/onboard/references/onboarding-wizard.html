@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fountain OS Setup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:    #213364;
+    --cream:   #EBE4CE;
+    --cyan:    #00B7C5;
+    --warm:    #C9813A;
+    --bg:      #F5F0E8;
+    --card:    #FDFCF8;
+    --border:  #DDD7C8;
+    --text:    #1C1C1C;
+    --muted:   #7A6F62;
+    --serif:   'Cormorant Garamond', Georgia, serif;
+    --sans:    -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Header */
+  .header {
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+  }
+
+  .header-brand {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.01em;
+  }
+
+  .header-title {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-top: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .header-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  /* Progress */
+  .progress-bar {
+    background: var(--border);
+    height: 3px;
+    width: 100%;
+  }
+
+  .progress-fill {
+    background: var(--navy);
+    height: 3px;
+    border-radius: 2px;
+    transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Content */
+  .content {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+  }
+
+  /* Steps */
+  .step {
+    display: none;
+    animation: slideIn 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .step.active {
+    display: block;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-label {
+    font-family: var(--sans);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .step-title {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+
+  .step-body {
+    font-size: 13px;
+    color: #4a4540;
+    line-height: 1.65;
+  }
+
+  .step-body p {
+    margin-bottom: 12px;
+  }
+
+  /* Checklist */
+  .checklist {
+    list-style: none;
+    margin: 16px 0;
+  }
+
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .checklist li:last-child {
+    border-bottom: none;
+  }
+
+  .check-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .check-icon.done {
+    background: var(--navy);
+    border-color: var(--navy);
+  }
+
+  .check-icon.done::after {
+    content: '';
+    width: 6px;
+    height: 10px;
+    border: 2px solid var(--cream);
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+    margin-top: -2px;
+  }
+
+  .check-icon.current {
+    border-color: var(--navy);
+    background: rgba(33,51,100,0.08);
+  }
+
+  .check-label {
+    flex: 1;
+  }
+
+  .check-label strong {
+    display: block;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .check-label span {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  /* Tip callout */
+  .tip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0,183,197,0.1);
+    border: 1px solid rgba(0,183,197,0.3);
+    color: #006b73;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 20px;
+    padding: 5px 12px;
+    margin: 12px 0;
+  }
+
+  /* Cards */
+  .info-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 12px 0;
+  }
+
+  .info-card-title {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+
+  .info-card-body {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  /* Nav buttons */
+  .step-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .btn-primary {
+    background: var(--navy);
+    color: var(--cream);
+    border: none;
+    border-radius: 6px;
+    font-family: var(--sans);
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 0 16px;
+    height: 32px;
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+
+  .btn-primary:hover {
+    background: #2a4080;
+  }
+
+  .btn-secondary {
+    background: #fff;
+    border: 1.5px solid #b8b2a6;
+    color: #333;
+    border-radius: 6px;
+    font-family: var(--sans);
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 0 16px;
+    height: 32px;
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--navy);
+    color: var(--navy);
+    background: rgba(33,51,100,0.04);
+  }
+
+  .step-counter {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  /* Number badge */
+  .num-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--cream);
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .num-badge.inactive {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--muted);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-brand">Fountain</div>
+  <div class="header-title">Welcome to Fountain OS</div>
+  <div class="header-subtitle">Set up your personal workspace in a few steps. Claude will guide you through each one in the chat.</div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+
+<div class="content">
+
+  <!-- Step 1: Welcome / Overview -->
+  <div class="step active" id="step1">
+    <div class="step-label">Step 1 of 5</div>
+    <div class="step-title">What we're setting up</div>
+    <div class="step-body">
+      <p>Fountain OS is your personal AI workspace. By the end of this setup, you'll have:</p>
+
+      <ul class="checklist" id="overviewChecklist">
+        <li>
+          <div class="check-icon current"></div>
+          <div class="check-label">
+            <strong>Google Drive connected</strong>
+            <span>So Claude can access shared team docs</span>
+          </div>
+        </li>
+        <li>
+          <div class="check-icon"></div>
+          <div class="check-label">
+            <strong>Personal CLAUDE.md</strong>
+            <span>Your profile, preferences, and working context</span>
+          </div>
+        </li>
+        <li>
+          <div class="check-icon"></div>
+          <div class="check-label">
+            <strong>Memory system</strong>
+            <span>Glossary, people, projects that Claude remembers across sessions</span>
+          </div>
+        </li>
+        <li>
+          <div class="check-icon"></div>
+          <div class="check-label">
+            <strong>Task board</strong>
+            <span>Personal task management synced with meetings</span>
+          </div>
+        </li>
+        <li>
+          <div class="check-icon"></div>
+          <div class="check-label">
+            <strong>Daily commands</strong>
+            <span><code>triage</code> to start your day, <code>reflect</code> to close it</span>
+          </div>
+        </li>
+      </ul>
+
+      <div class="tip">This takes about 5 minutes</div>
+    </div>
+    <div class="step-nav">
+      <div class="step-counter">1 / 5</div>
+      <button class="btn-primary" onclick="goToStep(2)">Let's go</button>
+    </div>
+  </div>
+
+  <!-- Step 2: Connect Google Drive -->
+  <div class="step" id="step2">
+    <div class="step-label">Step 2 of 5</div>
+    <div class="step-title">Connect Google Drive</div>
+    <div class="step-body">
+      <p>Claude needs access to shared team documents (org context, project files, templates). This requires the Google Drive connector.</p>
+
+      <div class="info-card">
+        <div class="info-card-title">How to connect</div>
+        <div class="info-card-body">
+          Open <strong>Settings</strong> (gear icon, bottom left) then <strong>Connectors</strong>. Find <strong>Google Drive</strong> and click <strong>Connect</strong>. Sign in with your Fountain Google account.
+        </div>
+      </div>
+
+      <p>Once connected, tell Claude in the chat: "Drive is connected." Claude will verify by searching for the team context file.</p>
+
+      <div class="tip">If you already have Drive connected, just skip ahead</div>
+    </div>
+    <div class="step-nav">
+      <button class="btn-secondary" onclick="goToStep(1)">Back</button>
+      <div class="step-counter">2 / 5</div>
+      <button class="btn-primary" onclick="goToStep(3)">Drive is connected</button>
+    </div>
+  </div>
+
+  <!-- Step 3: Personal Setup -->
+  <div class="step" id="step3">
+    <div class="step-label">Step 3 of 5</div>
+    <div class="step-title">Tell Claude about yourself</div>
+    <div class="step-body">
+      <p>Claude is asking you a few questions in the chat right now. Answer them conversationally. Claude will use your answers to build your personal profile.</p>
+
+      <div class="info-card">
+        <div class="info-card-title">What Claude will ask</div>
+        <div class="info-card-body">
+          Your name and role, main responsibilities, who you work with, your recurring meetings, and how you like Claude to communicate with you.
+        </div>
+      </div>
+
+      <p>Take your time. The more context you give, the better Claude will work for you in future sessions.</p>
+
+      <div class="tip">This creates your personal CLAUDE.md and memory files</div>
+    </div>
+    <div class="step-nav">
+      <button class="btn-secondary" onclick="goToStep(2)">Back</button>
+      <div class="step-counter">3 / 5</div>
+      <button class="btn-primary" onclick="goToStep(4)">Done with questions</button>
+    </div>
+  </div>
+
+  <!-- Step 4: Task Setup -->
+  <div class="step" id="step4">
+    <div class="step-label">Step 4 of 5</div>
+    <div class="step-title">Set up your task board</div>
+    <div class="step-body">
+      <p>Type <code>task-setup</code> in the chat. Claude will create your personal task management system.</p>
+
+      <div class="info-card">
+        <div class="info-card-title">What gets created</div>
+        <div class="info-card-body">
+          A task board (HTML viewer), a task data file (tasks.json), a build script, and a meeting sync shortcut that automatically captures action items from your Granola meetings.
+        </div>
+      </div>
+
+      <p>After setup, your task board opens in this panel. In future sessions, typing <code>triage</code> opens it automatically.</p>
+    </div>
+    <div class="step-nav">
+      <button class="btn-secondary" onclick="goToStep(3)">Back</button>
+      <div class="step-counter">4 / 5</div>
+      <button class="btn-primary" onclick="goToStep(5)">Task board is set up</button>
+    </div>
+  </div>
+
+  <!-- Step 5: Done -->
+  <div class="step" id="step5">
+    <div class="step-label">Step 5 of 5</div>
+    <div class="step-title">You're all set</div>
+    <div class="step-body">
+      <p>Your Fountain OS workspace is ready. Here's how to use it day to day:</p>
+
+      <ul class="checklist">
+        <li>
+          <div class="num-badge">1</div>
+          <div class="check-label">
+            <strong>Start each session with <code>triage</code></strong>
+            <span>Opens your task board, pulls calendar, scans email and Slack, delivers a prioritized briefing</span>
+          </div>
+        </li>
+        <li>
+          <div class="num-badge">2</div>
+          <div class="check-label">
+            <strong>Work through your day with Claude</strong>
+            <span>Draft emails, prep for meetings, manage tasks, research questions</span>
+          </div>
+        </li>
+        <li>
+          <div class="num-badge">3</div>
+          <div class="check-label">
+            <strong>End with <code>reflect</code></strong>
+            <span>Claude reviews the session and proposes memory updates so the next session is smarter</span>
+          </div>
+        </li>
+      </ul>
+
+      <div class="info-card">
+        <div class="info-card-title">Getting help</div>
+        <div class="info-card-body">
+          If something isn't working right, just tell Claude. The system improves with every correction you make. You can also reach out to Doron or Lindsay for support.
+        </div>
+      </div>
+
+      <div class="tip">Welcome to the team</div>
+    </div>
+    <div class="step-nav">
+      <button class="btn-secondary" onclick="goToStep(4)">Back</button>
+      <div class="step-counter">5 / 5</div>
+      <div></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const totalSteps = 5;
+  let currentStep = 1;
+
+  function goToStep(n) {
+    if (n < 1 || n > totalSteps) return;
+
+    // Hide current
+    document.getElementById('step' + currentStep).classList.remove('active');
+
+    // Show new
+    currentStep = n;
+    document.getElementById('step' + currentStep).classList.add('active');
+
+    // Update progress
+    const pct = ((currentStep - 1) / (totalSteps - 1)) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+
+    // Update overview checklist icons
+    if (currentStep >= 1) updateChecklist();
+  }
+
+  function updateChecklist() {
+    const items = document.querySelectorAll('#overviewChecklist .check-icon');
+    const stepMap = [1, 2, 2, 3, 4]; // which step completes each checklist item
+    items.forEach((icon, i) => {
+      icon.classList.remove('done', 'current');
+      if (currentStep > stepMap[i]) {
+        icon.classList.add('done');
+      } else if (currentStep === stepMap[i]) {
+        icon.classList.add('current');
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
