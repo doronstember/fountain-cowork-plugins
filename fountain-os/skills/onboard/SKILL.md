@@ -5,34 +5,41 @@ description: >
   new user types "onboard", "set up my Claude", "set me up", "set up my workspace",
   "get me started", or is directed to run this step during Fountain OS onboarding
   (the "Set up your workspace" step in the onboarding wizard).
-version: 0.1.0
+version: 0.2.0
 ---
 
 ## Onboard
 
 Set up a new team member's personal Fountain OS workspace. Run the full sequence below.
 
-### Step 0: Open the onboarding wizard
+### Step 1: Open the onboarding wizard
 
 **Do this first, before saying anything else.**
 
-Search Google Drive for `onboarding-wizard.html` in the Fountain Shared / setup-kit folder. Download or access the file, save it temporarily to the user's Cowork folder as `onboarding-wizard.html` if it is not already there, then call `present_files` with that path. This opens the wizard in the right panel of Claude Desktop.
+The wizard file is bundled with this plugin at `references/onboarding-wizard.html`. Copy it to the user's Cowork folder as `onboarding-wizard.html`, then call `present_files` with that path. This opens the wizard in the right panel of Claude Desktop.
 
-After calling `present_files`, greet the user briefly in the chat — something like: "Welcome to Fountain OS. The setup wizard is open in the right panel — it will guide you through each step. I'll run through the setup questions here in the chat at the same time. Let's start with a few basics."
+After calling `present_files`, greet the user briefly in the chat: "Welcome to Fountain OS. The setup wizard is open in the right panel. It will guide you through each step, and I'll work through the setup questions here in the chat. Let's get started."
 
-If the wizard file is not accessible (Drive not connected or file not found), skip silently and proceed to Step 1 without mentioning it.
+### Step 2: Verify Google Drive connection
 
-### Step 1: Load team context
+Before proceeding, check whether the Google Drive MCP connector is available by attempting a Drive search (e.g., search for `company-context.md`).
+
+- **If Drive is connected:** Confirm silently and proceed to Step 3.
+- **If Drive is NOT connected:** Stop and tell the user:
+
+  "Before we continue, I need you to connect Google Drive. Go to **Settings > Connectors** (the puzzle piece icon at the bottom of the left sidebar), find Google Drive, and click Connect. Once it's linked, come back and type `onboard` again."
+
+  Do not proceed until Drive is connected. The rest of the setup depends on it.
+
+### Step 3: Load team context
 
 Search Google Drive for `company-context.md` in the Fountain Shared folder. Read the file. It provides the canonical team roster, org structure, active projects, and company vocabulary.
 
-If the file is not accessible (Drive not connected or file not found), pause and tell the user:
+If the file is found but unreadable, tell the user and ask them to check their Drive permissions.
 
-"I need access to the shared team context to set you up properly. Please make sure Google Drive is connected in Settings → Connectors, then try again."
+### Step 4: Interview the new user
 
-### Step 2: Interview the new user
-
-Ask the following questions in 2-3 conversational turns (not all at once). Be welcoming and collegial — this is their first real interaction with the platform.
+Ask the following questions in 2-3 conversational turns (not all at once). Be welcoming and collegial.
 
 1. **Name and role**: What's your name, and what's your role at Fountain?
 2. **Responsibilities**: What are your main areas of ownership or focus?
@@ -42,9 +49,9 @@ Ask the following questions in 2-3 conversational turns (not all at once). Be we
 6. **Domain focus**: Is your work primarily clinical, operational, product/tech, or a mix?
 7. **Email**: What email address should Claude use when referencing you?
 
-### Step 3: Generate CLAUDE.md
+### Step 5: Generate CLAUDE.md
 
-Using the interview answers and the team context from Step 1, write `.claude/CLAUDE.md` to the user's Cowork folder.
+Using the interview answers and the team context from Step 3, write `.claude/CLAUDE.md` to the user's Cowork folder.
 
 Use the template in `references/claude-md-template.md` as the structural guide. Personalize all sections for this specific user:
 
@@ -54,7 +61,7 @@ Use the template in `references/claude-md-template.md` as the structural guide. 
 - Reflect their working style preferences
 - Strip sections that don't apply to their role (e.g., clinical terms if they have no clinical context)
 
-### Step 4: Create memory directory structure
+### Step 6: Create memory directory structure
 
 Create the following structure under `.claude/`:
 
@@ -85,8 +92,17 @@ Write `METADATA.md` with initial timestamps for all files just created. Format:
 | context/fountain.md | [today's date] |
 ```
 
-### Step 5: Confirm
+### Step 7: Set up task board
 
-Tell the user what was created. Keep it brief — they can review the files themselves. Point them to the next step in the onboarding wizard: Configure Task Sync (type `task-setup` to run it).
+Run the `task-setup` skill automatically. Tell the user: "Now I'll set up your task board." Then execute the task-setup sequence.
+
+### Step 8: Confirm
+
+Tell the user what was created. Keep it brief. Let them know:
+
+- Their workspace is configured and ready
+- Type `triage` at the start of each session for a morning briefing
+- Type `reflect` at the end of each session to compound what they learned
+- The onboarding wizard in the right panel has a summary of everything that was set up
 
 See `references/claude-md-template.md` for the full CLAUDE.md template structure.
