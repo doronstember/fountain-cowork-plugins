@@ -1,0 +1,13 @@
+{
+    "name": "fountain-cowork-plugins",
+    "owner": {
+          "name": "Fountain"
+    },
+    "plugins": [
+          {
+                  "name": "fountain-os",
+                  "source": "./fountain-os",
+                  "description": "Core skills for the Fountain OS platform: triage, reflect, onboarding, and task setup."
+          }
+    ]
+}
