@@ -1,12 +1,33 @@
 <!DOCTYPE html>
+<!--
+  FOUNTAIN ONBOARDING WIZARD
+  ─────────────────────────────────────────────────────────────────────────────
+  DESIGN IS LOCKED. Do not modify colors, fonts, layout, spacing, or visual
+  appearance unless Doron explicitly asks for a design change.
+
+  Approved changes without explicit request:
+    - Step content (body text, action text, tips)
+    - Adding or reordering steps
+    - Bug fixes to JavaScript logic
+    - New functionality Doron has requested
+
+  Never change without explicit request from Doron:
+    - CSS color variables (--navy, --cream, --cyan, --warm, --bg, --card, etc.)
+    - Font families (Cormorant Garamond / system-ui sans)
+    - Layout structure (sidebar width, panel proportions, flex arrangement)
+    - Typography sizes, weights, or line heights
+    - SVG illustration styles
+    - Button styles, border radii, spacing rhythms
+  ─────────────────────────────────────────────────────────────────────────────
+-->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fountain OS Setup</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+<title>Fountain OS · Onboarding</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&display=swap');
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
@@ -19,186 +40,393 @@
     --border:  #DDD7C8;
     --text:    #1C1C1C;
     --muted:   #7A6F62;
-    --serif:   'Cormorant Garamond', Georgia, serif;
+    --serif:   'Ivory LL', 'Cormorant Garamond', Georgia, serif;
     --sans:    -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
   }
 
-  body {
+  html, body {
+    height: 100%;
+    overflow: hidden;
     font-family: var(--sans);
     background: var(--bg);
     color: var(--text);
-    min-height: 100vh;
+  }
+
+  /* ── LAYOUT ── */
+  .wizard {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ── LEFT PANEL ── */
+  .left {
+    width: 380px;
+    flex-shrink: 0;
+    background: var(--cream);
+    border-right: 1px solid var(--border);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
   }
 
-  /* Header */
-  .header {
-    background: var(--cream);
+  .left-header {
+    padding: 28px 28px 18px;
     border-bottom: 1px solid var(--border);
-    padding: 20px 24px;
+    flex-shrink: 0;
   }
 
-  .header-brand {
+  .brand {
     font-family: var(--serif);
-    font-size: 20px;
-    font-weight: 700;
     color: var(--navy);
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 2px;
     letter-spacing: -0.01em;
   }
 
-  .header-title {
-    font-family: var(--serif);
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--navy);
-    margin-top: 12px;
-    letter-spacing: -0.01em;
-  }
-
-  .header-subtitle {
-    font-size: 13px;
+  .brand-sub {
+    font-size: 11px;
     color: var(--muted);
-    margin-top: 4px;
-    line-height: 1.5;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
   }
 
-  /* Progress */
-  .progress-bar {
+  /* Progress bar */
+  .progress-wrap {
+    padding: 14px 28px 0;
+    flex-shrink: 0;
+  }
+
+  .progress-label {
+    font-size: 10.5px;
+    color: var(--muted);
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .progress-bar-bg {
+    height: 4px;
     background: var(--border);
-    height: 3px;
-    width: 100%;
-  }
-
-  .progress-fill {
-    background: var(--navy);
-    height: 3px;
     border-radius: 2px;
-    transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    overflow: hidden;
+    margin-bottom: 16px;
   }
 
-  /* Content */
-  .content {
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--navy);
+    border-radius: 2px;
+    transition: width 0.35s ease;
+  }
+
+  /* Step list */
+  .step-list {
     flex: 1;
-    padding: 24px;
+    overflow-y: auto;
+    padding: 4px 16px 12px;
+  }
+
+  .step-list::-webkit-scrollbar { width: 4px; }
+  .step-list::-webkit-scrollbar-track { background: transparent; }
+  .step-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .step-group-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 12px 12px 5px;
+  }
+
+  .step-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    position: relative;
+    margin-bottom: 2px;
+  }
+
+  .step-item:hover:not(.active) {
+    background: rgba(33,51,100,0.06);
+  }
+
+  .step-item.active {
+    background: var(--navy);
+  }
+
+  .step-item.done .step-num-wrap {
+    background: rgba(33,51,100,0.12);
+  }
+
+  .step-item.done .step-num {
+    display: none;
+  }
+
+  .step-item.done .step-check {
+    display: flex;
+  }
+
+  .step-num-wrap {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(33,51,100,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+
+  .step-item.active .step-num-wrap {
+    background: rgba(255,255,255,0.2);
+  }
+
+  .step-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .step-item.active .step-num {
+    color: var(--cream);
+  }
+
+  .step-check {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: var(--navy);
+    font-size: 12px;
+  }
+
+  .step-item.active .step-check {
+    color: var(--cream);
+  }
+
+  .step-item.done.active .step-num-wrap {
+    background: rgba(255,255,255,0.2);
+  }
+
+  .step-label-wrap {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .step-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+  }
+
+  .step-item.active .step-name {
+    color: #fff;
+  }
+
+  .step-item.done .step-name {
+    color: var(--muted);
+  }
+
+  .step-sub {
+    font-size: 10.5px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .step-item.active .step-sub {
+    color: rgba(235,228,206,0.75);
+  }
+
+  .step-badge {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .badge-setup {
+    background: rgba(33,51,100,0.1);
+    color: var(--navy);
+  }
+
+  .badge-cmd {
+    background: rgba(201,129,58,0.12);
+    color: var(--warm);
+  }
+
+  .step-item.active .badge-setup {
+    background: rgba(255,255,255,0.18);
+    color: rgba(235,228,206,0.9);
+  }
+
+  .step-item.active .badge-cmd {
+    background: rgba(255,255,255,0.18);
+    color: rgba(235,228,206,0.9);
+  }
+
+  /* Nav buttons */
+  .left-nav {
+    padding: 14px 20px 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .btn {
+    height: 38px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.15s, background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  .btn-back {
+    width: 80px;
+    background: var(--border);
+    color: var(--navy);
+    flex-shrink: 0;
+  }
+
+  .btn-back:hover:not(:disabled) {
+    background: #ccc9be;
+  }
+
+  .btn-next {
+    flex: 1;
+    background: var(--navy);
+    color: var(--cream);
+  }
+
+  .btn-next:hover:not(:disabled) {
+    background: #1a2850;
+  }
+
+  .btn-next.finish {
+    background: #1a7a40;
+    color: #fff;
+  }
+
+  /* ── RIGHT PANEL ── */
+  .right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  .right-inner {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 60px;
+    text-align: center;
     overflow-y: auto;
   }
 
-  /* Steps */
-  .step {
-    display: none;
-    animation: slideIn 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  .right-inner::-webkit-scrollbar { width: 4px; }
+  .right-inner::-webkit-scrollbar-track { background: transparent; }
+  .right-inner::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .illustration-area {
+    width: 100%;
+    max-width: 420px;
+    margin-bottom: 32px;
+    position: relative;
   }
 
-  .step.active {
-    display: block;
+  .illustration-area svg {
+    width: 100%;
+    height: auto;
+    max-height: 280px;
   }
 
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .step-label {
-    font-family: var(--sans);
+  .step-content-label {
     font-size: 10.5px;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
 
-  .step-title {
+  .step-content-title {
     font-family: var(--serif);
-    font-size: 22px;
+    font-size: 30px;
     font-weight: 700;
     color: var(--navy);
-    margin-bottom: 16px;
+    line-height: 1.2;
+    margin-bottom: 14px;
     letter-spacing: -0.01em;
   }
 
-  .step-body {
-    font-size: 13px;
+  .step-content-body {
+    font-size: 14px;
     color: #4a4540;
-    line-height: 1.65;
+    line-height: 1.75;
+    max-width: 460px;
+    margin: 0 auto 20px;
+    text-align: left;
   }
 
-  .step-body p {
-    margin-bottom: 12px;
-  }
-
-  /* Checklist */
-  .checklist {
-    list-style: none;
-    margin: 16px 0;
-  }
-
-  .checklist li {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 13px;
-    line-height: 1.5;
-  }
-
-  .checklist li:last-child {
-    border-bottom: none;
-  }
-
-  .check-icon {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 1.5px solid var(--border);
-    flex-shrink: 0;
-    margin-top: 1px;
-    display: flex;
+  .step-content-action {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-  }
-
-  .check-icon.done {
-    background: var(--navy);
-    border-color: var(--navy);
-  }
-
-  .check-icon.done::after {
-    content: '';
-    width: 6px;
-    height: 10px;
-    border: 2px solid var(--cream);
-    border-top: none;
-    border-left: none;
-    transform: rotate(45deg);
-    margin-top: -2px;
-  }
-
-  .check-icon.current {
-    border-color: var(--navy);
-    background: rgba(33,51,100,0.08);
-  }
-
-  .check-label {
-    flex: 1;
-  }
-
-  .check-label strong {
-    display: block;
+    gap: 8px;
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 13px;
+    color: var(--navy);
     font-weight: 600;
-    color: var(--text);
   }
 
-  .check-label span {
-    color: var(--muted);
-    font-size: 12px;
+  .step-content-action a {
+    color: var(--navy);
+    text-decoration: underline;
+    text-decoration-color: rgba(33,51,100,0.3);
   }
 
-  /* Tip callout */
-  .tip {
+  .step-content-action a:hover {
+    text-decoration-color: var(--navy);
+  }
+
+  /* Tip tag */
+  .tip-tag {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -209,90 +437,254 @@
     font-weight: 600;
     border-radius: 20px;
     padding: 5px 12px;
-    margin: 12px 0;
+    margin-top: 14px;
   }
 
-  /* Cards */
-  .info-card {
+  /* Done screen */
+  .done-screen {
+    text-align: center;
+    padding: 0 40px;
+  }
+
+  .done-screen .big-check {
+    width: 72px;
+    height: 72px;
+    background: var(--navy);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    font-size: 30px;
+    color: var(--cream);
+  }
+
+  .done-screen h2 {
+    font-family: var(--serif);
+    font-size: 36px;
+    color: var(--navy);
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+
+  .done-screen p {
+    font-size: 15px;
+    color: #4a4540;
+    line-height: 1.7;
+    max-width: 400px;
+    margin: 0 auto 24px;
+  }
+
+  .done-commands {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .done-cmd {
     background: var(--card);
     border: 1.5px solid var(--border);
     border-radius: 8px;
-    padding: 16px;
-    margin: 12px 0;
+    padding: 12px 20px;
+    text-align: left;
+    min-width: 140px;
   }
 
-  .info-card-title {
+  .done-cmd .word {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 2px;
+  }
+
+  .done-cmd.triage .word { color: var(--warm); }
+  .done-cmd.reflect .word { color: var(--navy); }
+
+  .done-cmd .when {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     font-weight: 700;
-    font-size: 13px;
-    color: var(--navy);
-    margin-bottom: 6px;
-  }
-
-  .info-card-body {
-    font-size: 12.5px;
     color: var(--muted);
-    line-height: 1.55;
   }
 
-  /* Nav buttons */
-  .step-nav {
+  /* Skipped state in sidebar */
+  .step-item.skipped .step-num-wrap {
+    background: rgba(122,111,98,0.08);
+  }
+
+  .step-item.skipped .step-num {
+    display: none;
+  }
+
+  .step-item.skipped .step-check {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 24px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0;
   }
 
-  .btn-primary {
-    background: var(--navy);
-    color: var(--cream);
-    border: none;
+  .step-item.skipped .step-check::after {
+    content: '—';
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .step-item.skipped .step-name {
+    color: var(--muted);
+    text-decoration: line-through;
+    text-decoration-color: rgba(122,111,98,0.4);
+  }
+
+  .step-item.skipped .step-sub {
+    color: rgba(122,111,98,0.6);
+  }
+
+  .step-item.skipped .badge-setup {
+    opacity: 0.4;
+  }
+
+  /* Step status controls — live in sidebar below active item */
+  .step-actions {
+    display: flex;
+    gap: 6px;
+    padding: 6px 12px 10px 12px;
+    background: var(--cream);
+  }
+
+  .step-action-btn {
+    flex: 1;
+    height: 28px;
     border-radius: 6px;
-    font-family: var(--sans);
     font-size: 11.5px;
     font-weight: 600;
-    padding: 0 16px;
-    height: 32px;
     cursor: pointer;
-    transition: background 0.12s;
-  }
-
-  .btn-primary:hover {
-    background: #2a4080;
-  }
-
-  .btn-secondary {
-    background: #fff;
     border: 1.5px solid #b8b2a6;
+    background: #fff;
     color: #333;
-    border-radius: 6px;
+    transition: background 0.12s, border-color 0.12s, color 0.12s;
     font-family: var(--sans);
-    font-size: 11.5px;
-    font-weight: 600;
-    padding: 0 16px;
-    height: 32px;
-    cursor: pointer;
-    transition: all 0.12s;
+    white-space: nowrap;
   }
 
-  .btn-secondary:hover {
+  .step-action-btn:hover {
     border-color: var(--navy);
     color: var(--navy);
     background: rgba(33,51,100,0.04);
   }
 
-  .step-counter {
-    font-size: 11px;
-    color: var(--muted);
-    font-weight: 600;
+  .step-action-btn.marked-done {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: #fff;
   }
 
-  /* Number badge */
-  .num-badge {
+  .step-action-btn.marked-done:hover {
+    background: #1a2850;
+    border-color: #1a2850;
+    color: #fff;
+  }
+
+  .step-action-btn.marked-skip {
+    background: #e8e3da;
+    border-color: #b8b2a6;
+    color: #888;
+    text-decoration: line-through;
+    text-decoration-color: #aaa;
+  }
+
+  .step-action-btn.marked-skip:hover {
+    background: #ddd8ce;
+    border-color: #999;
+    color: #555;
+  }
+
+  /* Slide transitions */
+  .slide-enter {
+    animation: slideIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SUBSTEP LAYOUT ── */
+  .right-inner:has(.step-panel) {
+    justify-content: flex-start;
+  }
+
+  .step-panel {
+    width: 100%;
+    max-width: 560px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .step-panel-header {
+    margin-bottom: 24px;
+  }
+
+  .step-panel-badge {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .step-panel-title {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 10px;
+  }
+
+  .step-panel-tip {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
+    gap: 6px;
+    background: rgba(0,183,197,0.1);
+    border: 1px solid rgba(0,183,197,0.3);
+    color: #006b73;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 20px;
+    padding: 5px 12px;
+    margin-top: 4px;
+  }
+
+  .step-panel-cmd {
+    font-family: var(--serif);
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .step-panel-cmd.triage  { color: var(--warm); }
+  .step-panel-cmd.reflect { color: var(--navy); }
+
+  .substeps {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .substep {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .substep:last-child {
+    border-bottom: none;
+  }
+
+  .substep-num {
     width: 26px;
     height: 26px;
     border-radius: 50%;
@@ -300,242 +692,1517 @@
     color: var(--cream);
     font-size: 11px;
     font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
+    margin-top: 2px;
   }
 
-  .num-badge.inactive {
-    background: transparent;
+  .substep-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(33,51,100,0.07);
+    color: var(--navy);
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .substep-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .substep-label {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .substep-detail {
+    font-size: 13px;
+    color: #4a4540;
+    line-height: 1.65;
+  }
+
+  .substep-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--navy);
+    text-decoration: underline;
+    text-decoration-color: rgba(33,51,100,0.3);
+  }
+
+  .substep-link:hover {
+    text-decoration-color: var(--navy);
+  }
+
+  .copy-block {
+    margin-top: 12px;
+    background: var(--card);
     border: 1.5px solid var(--border);
-    color: var(--muted);
+    border-radius: 8px;
+    overflow: hidden;
   }
 
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .copy-btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 7px 12px;
+    background: rgba(33,51,100,0.04);
+    border-bottom: 1px solid var(--border);
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    cursor: pointer;
+    width: 100%;
+    font-family: var(--sans);
+    transition: background 0.12s;
+  }
+
+  .copy-btn:hover {
+    background: rgba(33,51,100,0.08);
+  }
+
+  .copy-indicator {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--navy);
+    background: rgba(33,51,100,0.1);
+    border: 1px solid rgba(33,51,100,0.2);
+    border-radius: 4px;
+    padding: 2px 9px;
+    letter-spacing: 0.02em;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+
+  .copy-btn:hover .copy-indicator {
+    background: rgba(33,51,100,0.16);
+    border-color: rgba(33,51,100,0.35);
+  }
+
+  .copy-btn.copied .copy-indicator {
+    background: rgba(26,122,64,0.1);
+    border-color: rgba(26,122,64,0.25);
+    color: #1a7a40;
+  }
+
+  .copy-code {
+    display: block;
+    padding: 12px 14px;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 11px;
+    line-height: 1.6;
+    color: #2d2d2d;
+    white-space: pre;
+    overflow-x: auto;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  /* ── INTRO STEP LAYOUT ── */
+  .intro-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .intro-section {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .intro-section:last-child {
+    border-bottom: none;
+  }
+
+  .intro-label {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 5px;
+    line-height: 1.3;
+  }
+
+  .intro-detail {
+    font-size: 13px;
+    color: #4a4540;
+    line-height: 1.65;
+  }
+
+  .intro-callout {
+    margin-top: 16px;
+    background: rgba(33,51,100,0.04);
+    border-left: 3px solid rgba(33,51,100,0.25);
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .intro-callout .intro-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .intro-callout .intro-detail {
+    font-size: 12.5px;
+    color: #555;
+  }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-brand">Fountain</div>
-  <div class="header-title">Welcome to Fountain OS</div>
-  <div class="header-subtitle">Set up your personal workspace in a few steps. Claude will guide you through each one in the chat.</div>
-</div>
-<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%"></div></div>
+<div class="wizard">
 
-<div class="content">
-
-  <!-- Step 1: Welcome / Overview -->
-  <div class="step active" id="step1">
-    <div class="step-label">Step 1 of 5</div>
-    <div class="step-title">What we're setting up</div>
-    <div class="step-body">
-      <p>Fountain OS is your personal AI workspace. By the end of this setup, you'll have:</p>
-
-      <ul class="checklist" id="overviewChecklist">
-        <li>
-          <div class="check-icon current"></div>
-          <div class="check-label">
-            <strong>Google Drive connected</strong>
-            <span>So Claude can access shared team docs</span>
-          </div>
-        </li>
-        <li>
-          <div class="check-icon"></div>
-          <div class="check-label">
-            <strong>Personal CLAUDE.md</strong>
-            <span>Your profile, preferences, and working context</span>
-          </div>
-        </li>
-        <li>
-          <div class="check-icon"></div>
-          <div class="check-label">
-            <strong>Memory system</strong>
-            <span>Glossary, people, projects that Claude remembers across sessions</span>
-          </div>
-        </li>
-        <li>
-          <div class="check-icon"></div>
-          <div class="check-label">
-            <strong>Task board</strong>
-            <span>Personal task management synced with meetings</span>
-          </div>
-        </li>
-        <li>
-          <div class="check-icon"></div>
-          <div class="check-label">
-            <strong>Daily commands</strong>
-            <span><code>triage</code> to start your day, <code>reflect</code> to close it</span>
-          </div>
-        </li>
-      </ul>
-
-      <div class="tip">This takes about 5 minutes</div>
+  <!-- LEFT -->
+  <div class="left">
+    <div class="left-header">
+      <div class="brand">Fountain OS</div>
     </div>
-    <div class="step-nav">
-      <div class="step-counter">1 / 5</div>
-      <button class="btn-primary" onclick="goToStep(2)">Let's go</button>
+
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Setup progress</span>
+        <span id="progress-frac">Step 1 of 14</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill" style="width:7%"></div>
+      </div>
     </div>
-  </div>
 
-  <!-- Step 2: Connect Google Drive -->
-  <div class="step" id="step2">
-    <div class="step-label">Step 2 of 5</div>
-    <div class="step-title">Connect Google Drive</div>
-    <div class="step-body">
-      <p>Claude needs access to shared team documents (org context, project files, templates). This requires the Google Drive connector.</p>
+    <div class="step-list" id="step-list">
 
-      <div class="info-card">
-        <div class="info-card-title">How to connect</div>
-        <div class="info-card-body">
-          Open <strong>Settings</strong> (gear icon, bottom left) then <strong>Connectors</strong>. Find <strong>Google Drive</strong> and click <strong>Connect</strong>. Sign in with your Fountain Google account.
+      <div class="step-group-label">Getting Started</div>
+
+      <div class="step-item active" data-idx="0" onclick="goTo(0)">
+        <div class="step-num-wrap">
+          <span class="step-num">1</span>
+          <span class="step-check">&#10003;</span>
+        </div>
+        <div class="step-label-wrap">
+          <div class="step-name">You're In</div>
+          <div class="step-sub">Orientation</div>
+        </div>
+      </div>
+      <div class="step-item" data-idx="1" onclick="goTo(1)">
+        <div class="step-num-wrap">
+          <span class="step-num">2</span>
+          <span class="step-check">&#10003;</span>
+        </div>
+        <div class="step-label-wrap">
+          <div class="step-name">Your CLAUDE.md</div>
+          <div class="step-sub">Onboard is running now</div>
+        </div>
+      </div>
+      <div class="step-item" data-idx="2" onclick="goTo(2)">
+        <div class="step-num-wrap">
+          <span class="step-num">3</span>
+          <span class="step-check">&#10003;</span>
+        </div>
+        <div class="step-label-wrap">
+          <div class="step-name">Organize Your Workspace</div>
+          <div class="step-sub">Folders and backup</div>
         </div>
       </div>
 
-      <p>Once connected, type <code>onboard</code> in the chat to restart setup. Claude will verify the connection automatically before continuing.</p>
+      <div class="step-group-label">Connections</div>
 
-      <div class="tip">If you already have Drive connected, just skip ahead</div>
-    </div>
-    <div class="step-nav">
-      <button class="btn-secondary" onclick="goToStep(1)">Back</button>
-      <div class="step-counter">2 / 5</div>
-      <button class="btn-primary" onclick="goToStep(3)">Drive is connected</button>
-    </div>
-  </div>
-
-  <!-- Step 3: Personal Setup -->
-  <div class="step" id="step3">
-    <div class="step-label">Step 3 of 5</div>
-    <div class="step-title">Tell Claude about yourself</div>
-    <div class="step-body">
-      <p>Claude is asking you a few questions in the chat right now. Answer them conversationally. Claude will use your answers to build your personal profile.</p>
-
-      <div class="info-card">
-        <div class="info-card-title">What Claude will ask</div>
-        <div class="info-card-body">
-          Your name and role, main responsibilities, who you work with, your recurring meetings, and how you like Claude to communicate with you.
+      <div class="step-item" data-idx="3" onclick="goTo(3)">
+        <div class="step-num-wrap">
+          <span class="step-num">4</span>
+          <span class="step-check">&#10003;</span>
+        </div>
+        <div class="step-label-wrap">
+          <div class="step-name">Download WhisperFlow</div>
+          <div class="step-sub">Voice-first input</div>
+        </div>
+      </div>
+      <div class="step-item" data-idx="4" onclick="goTo(4)">
+        <div class="step-num-wrap">
+          <span class="step-num">5</span>
+          <span class="step-check">&#10003;</span>
+        </div>
+        <div class="step-label-wrap">
+          <div class="step-name">Connect Gmail</div>
+          <div class="step-sub">Connect in Claude settings</div>
+        </div>
+      </div>
+      <div class="step-item" data-idx="5" onclick="goTo(5)">
+        <div class="step-num-wrap">
+          <span class="step-num">6</span>
+          <span class="step-check">&#10003;</span>
+        </div>
+        <div class="step-label-wrap">
+          <div class="step-name">Connect Google Calendar</div>
+          <div class="step-sub">Connect in Claude settings</div>
+        </div>
+      </div>
+      <div class="step-item" data-idx="6" onclick="goTo(6)">
+        <div class="step-num-wrap">
+          <span class="step-num">7</span>
+          <span class="step-check">&#10003;</span>
+        </div>
+        <div class="step-label-wrap">
+          <div class="step-name">Connect Slack</div>
+          <div class="step-sub">Connect in Claude settings</div>
+        </div>
+      </div>
+      <div class="step-item" data-idx="7" onclick="goTo(7)">
+        <div class="step-num-wrap">
+          <span class="step-num">8</span>
+          <span class="step-check">&#10003;</span>
+        </div>
+        <div class="step-label-wrap">
+          <div class="step-name">Connect Notion (if you use it)</div>
+          <div class="step-sub">Connect in Claude settings</div>
+        </div>
+      </div>
+      <div class="step-item" data-idx="8" onclick="goTo(8)">
+        <div class="step-num-wrap">
+          <span class="step-num">9</span>
+          <span class="step-check">&#10003;</span>
+        </div>
+        <div class="step-label-wrap">
+          <div class="step-name">Set Up Granola</div>
+          <div class="step-sub">Download and set up</div>
+        </div>
+      </div>
+      <div class="step-item" data-idx="9" onclick="goTo(9)">
+        <div class="step-num-wrap">
+          <span class="step-num">10</span>
+          <span class="step-check">&#10003;</span>
+        </div>
+        <div class="step-label-wrap">
+          <div class="step-name">Configure Task Sync</div>
+          <div class="step-sub">Type task-setup</div>
+        </div>
+      </div>
+      <div class="step-item" data-idx="10" onclick="goTo(10)">
+        <div class="step-num-wrap">
+          <span class="step-num">11</span>
+          <span class="step-check">&#10003;</span>
+        </div>
+        <div class="step-label-wrap">
+          <div class="step-name">Install Claude in Chrome</div>
+          <div class="step-sub">Browser extension</div>
         </div>
       </div>
 
-      <p>Take your time. The more context you give, the better Claude will work for you in future sessions.</p>
+      <div class="step-group-label">Daily Rhythm</div>
 
-      <div class="tip">This creates your personal CLAUDE.md and memory files</div>
-    </div>
-    <div class="step-nav">
-      <button class="btn-secondary" onclick="goToStep(2)">Back</button>
-      <div class="step-counter">3 / 5</div>
-      <button class="btn-primary" onclick="goToStep(4)">Done with questions</button>
-    </div>
-  </div>
-
-  <!-- Step 4: Task Setup -->
-  <div class="step" id="step4">
-    <div class="step-label">Step 4 of 5</div>
-    <div class="step-title">Set up your task board</div>
-    <div class="step-body">
-      <p>Type <code>task-setup</code> in the chat. Claude will create your personal task management system.</p>
-
-      <div class="info-card">
-        <div class="info-card-title">What gets created</div>
-        <div class="info-card-body">
-          A task board (HTML viewer), a task data file (tasks.json), a build script, and a meeting sync shortcut that automatically captures action items from your Granola meetings.
+      <div class="step-item" data-idx="11" onclick="goTo(11)">
+        <div class="step-num-wrap">
+          <span class="step-num">12</span>
+          <span class="step-check">&#10003;</span>
+        </div>
+        <div class="step-label-wrap">
+          <div class="step-name">Triage</div>
+          <div class="step-sub">Start of every session</div>
+        </div>
+      </div>
+      <div class="step-item" data-idx="12" onclick="goTo(12)">
+        <div class="step-num-wrap">
+          <span class="step-num">13</span>
+          <span class="step-check">&#10003;</span>
+        </div>
+        <div class="step-label-wrap">
+          <div class="step-name">Reflect</div>
+          <div class="step-sub">End of every session</div>
+        </div>
+      </div>
+      <div class="step-item" data-idx="13" onclick="goTo(13)">
+        <div class="step-num-wrap">
+          <span class="step-num">14</span>
+          <span class="step-check">&#10003;</span>
+        </div>
+        <div class="step-label-wrap">
+          <div class="step-name">Your First Project</div>
+          <div class="step-sub">Build your first workspace</div>
         </div>
       </div>
 
-      <p>After setup, your task board opens in this panel. In future sessions, typing <code>triage</code> opens it automatically.</p>
-    </div>
-    <div class="step-nav">
-      <button class="btn-secondary" onclick="goToStep(3)">Back</button>
-      <div class="step-counter">4 / 5</div>
-      <button class="btn-primary" onclick="goToStep(5)">Task board is set up</button>
+</div><!-- /step-list -->
+
+    <div class="left-nav">
+      <button class="btn btn-back" id="btn-back" onclick="goBack()" disabled>&#8592; Back</button>
+      <button class="btn btn-next" id="btn-next" onclick="goNext()">Next &#8594;</button>
     </div>
   </div>
 
-  <!-- Step 5: Done -->
-  <div class="step" id="step5">
-    <div class="step-label">Step 5 of 5</div>
-    <div class="step-title">You're all set</div>
-    <div class="step-body">
-      <p>Your Fountain OS workspace is ready. Here's how to use it day to day:</p>
-
-      <ul class="checklist">
-        <li>
-          <div class="num-badge">1</div>
-          <div class="check-label">
-            <strong>Start each session with <code>triage</code></strong>
-            <span>Opens your task board, pulls calendar, scans email and Slack, delivers a prioritized briefing</span>
-          </div>
-        </li>
-        <li>
-          <div class="num-badge">2</div>
-          <div class="check-label">
-            <strong>Work through your day with Claude</strong>
-            <span>Draft emails, prep for meetings, manage tasks, research questions</span>
-          </div>
-        </li>
-        <li>
-          <div class="num-badge">3</div>
-          <div class="check-label">
-            <strong>End with <code>reflect</code></strong>
-            <span>Claude reviews the session and proposes memory updates so the next session is smarter</span>
-          </div>
-        </li>
-      </ul>
-
-      <div class="info-card">
-        <div class="info-card-title">Getting help</div>
-        <div class="info-card-body">
-          If something isn't working right, just tell Claude. The system improves with every correction you make. You can also reach out to Doron or Lindsay for support.
-        </div>
-      </div>
-
-      <div class="tip">Welcome to the team</div>
-    </div>
-    <div class="step-nav">
-      <button class="btn-secondary" onclick="goToStep(4)">Back</button>
-      <div class="step-counter">5 / 5</div>
-      <div></div>
+  <!-- RIGHT -->
+  <div class="right">
+    <div class="right-inner" id="right-content">
+      <!-- Populated by JS -->
     </div>
   </div>
 
 </div>
 
 <script>
-  const totalSteps = 5;
-  let currentStep = 1;
+  const STEPS = [
+    /* 0 */
+    {
+      num: "01",
+      type: "intro",
+      badge: "Setup · Step 1 of 14",
+      title: "You're In",
+      tip: null,
+      substeps: [
+        {
+          label: "You're already set up",
+          detail: "Claude Desktop is installed, the Fountain OS plugin is active, and Google Drive is connected. The <strong>onboard</strong> skill is running right now in the chat panel on your left — it is reading shared team context from Drive and will ask you a few questions to build your personal CLAUDE.md file. Read this orientation first, then switch to the chat and work through onboard's questions. When it confirms your CLAUDE.md is written, come back here and continue to step 2.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "What Fountain OS is",
+          detail: "Fountain OS is built on Claude Cowork. It has AI chatbot functionality but it's a system built for action. It pulls tasks from your conversations and completes work once you define your workflows. It turns any repeated process into a one-word command. It allows the team to maintain a shared knowledge base.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Memory and Compounding",
+          detail: "AI chatbots start with blank context. Even with AI chatbot “projects,” memory is spotty and output is therefore inconsistent. Fountain OS is different. It uses Claude Cowork infrastructure to manage context reliably. Your role, your team, and your decisions live in a file called <code>CLAUDE.md</code>. The system reads it automatically at the start of every session. It remembers what matters. Each time you use Fountain OS, you should focus on shaping and improving and updating it. Over time, you should incorporate more and more of your workflows into Fountain OS. Work productivity will compound.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Skills: Repeatable Workflows",
+          detail: "A “skill” is Claude's expression for bundling a complex, multi-step process. Multi-step workflows are reduced to one or two commands. You can mix and match multiple skills depending on the task. Once a skill is built, you never need to explain that process again, but you can revise and improve skills at any time just by describing it and asking for the change to be committed to memory.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Talk, don't type",
+          detail: "This onboarding wizard will direct you to download a voice-to-text app called WhisperFlow. Talking is 2-3x faster than typing, but the bigger gain is subtler: when you type, you self-edit. You trim context that seems unnecessary. That editing removes exactly the kind of detail that makes responses better. Speak the way you would to a capable colleague — thinking out loud, giving full context — and the quality of what comes back improves noticeably.<br><br><strong>Always correct the system when it is wrong — and say what it should do instead.</strong> This is not just feedback. Fountain OS has a built-in self-correction process: every time you explicitly correct a mistake, the system writes a rule to your memory file and loads it at the start of every future session. It gets permanently smarter from that correction. But it only works if you state the correction clearly — both what was wrong and what to do instead. “Don't use dashes, use commas” is a correction the system can learn from. “That's wrong” alone is not. The more precisely you correct it, the less you'll ever have to correct it again.<br><br>Get into the habit of asking for its recommendations. Don't accept the first “I can't do that.” If it tells you something requires manual steps, push back: say you don't want to do any manual steps and ask what it can do instead. It won't always have a solution, but capabilities expand constantly and it's always worth testing the limits.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "How the Team Stays in Sync",
+          detail: "The more foundational of the two is the shared Google Drive folder. This is the actual team knowledge base, the part of Fountain OS that lives at the company level rather than on any individual machine. Company context, vendor relationships, project specs, and non-clinical reference data all live here. Every team member pulls from the same source, so the system's understanding of the organization stays consistent across the team.<br><br>The other mechanism is a dedicated Slack channel. Cowork is developing fast and new capabilities are showing up constantly. The channel is where we share what's working: skills we've built, workflows worth replicating, anything worth passing on. If you figure something out, post it. The goal is to stay collectively on the leading edge rather than each person working in isolation.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "PHI Boundary",
+          detail: "Fountain OS is for operational and strategic work only. Do not enter patient PHI. Clinical documentation must stay in clinical systems.",
+          note: true, link: null, linkLabel: null, copyId: null, copyLabel: null
+        }
+      ]
+    },
 
-  function goToStep(n) {
-    if (n < 1 || n > totalSteps) return;
+    /* 1 */
+    {
+      num: "02",
+      badge: "Setup · Step 2 of 14",
+      title: "Your CLAUDE.md",
+      tip: "Answer Claude's questions in the chat. Come back here when it confirms your file is written.",
+      substeps: [
+        {
+          label: "Onboard is running in the chat right now",
+          detail: "Switch to the left panel — Claude is asking you questions. Answer them. It will read shared team context from Google Drive, then interview you about your role, your collaborators, your recurring meetings, and how you work. The whole thing takes about 5 minutes.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "What gets created",
+          detail: "Once you complete the interview, Claude generates your CLAUDE.md — your permanent identity layer. It defines your role, your team, your tone preferences, and how Claude should work with you. Every session starts by reading this file automatically. It also creates a <code>memory/</code> directory with a glossary, a company context file, and a metadata index.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Come back here when Claude confirms it's done",
+          detail: "Claude will tell you when your CLAUDE.md is written and point you to the next step. At that point, return here and click Next. The remaining steps in this wizard take about 20 minutes total.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        }
+      ]
+    },
 
-    // Hide current
-    document.getElementById('step' + currentStep).classList.remove('active');
+    /* 2 */
+    {
+      num: "03",
+      badge: "Setup · Step 3 of 14",
+      title: "Organize Your Workspace",
+      tip: "Your Cowork folder is your permanent workspace root — always open Cowork sessions pointing to it, never a subfolder",
+      substeps: [
+        {
+          label: "Create project subfolders inside Cowork",
+          detail: "Inside your Cowork folder, create one folder per area you work in. Use whatever categories match your work: <strong>Clinical</strong>, <strong>Product</strong>, <strong>Legal</strong>, <strong>Admin</strong>, and so on.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Move existing work folders under Cowork",
+          detail: "If you have relevant folders elsewhere on your machine, drag them into Cowork. The goal is one root that contains everything you work on. You do not need to reorganize inside them, just bring them under one roof.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Back up the Cowork folder to iCloud",
+          detail: "Your Cowork folder holds your memory files, projects, and outputs. If your machine fails, that work is gone unless it is backed up. The easiest fix on a Mac: go to <strong>System Settings → [Your Name] → iCloud → iCloud Drive → Options</strong> and enable <strong>Desktop &amp; Documents Folders</strong>. If your Cowork folder is on the Desktop, it will sync to iCloud automatically from that point forward. On Windows, the equivalent is OneDrive folder sync or an equivalent backup solution.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        }
+      ]
+    },
 
-    // Show new
-    currentStep = n;
-    document.getElementById('step' + currentStep).classList.add('active');
+    /* 3 */
+    {
+      num: "04",
+      badge: "Connections · Step 4 of 14",
+      title: "Download WhisperFlow",
+      tip: "Speaking is 2 to 3x faster than typing — and more useful, because you stop editing yourself. Unfiltered context produces better responses.",
+      substeps: [
+        {
+          label: "Download and install WhisperFlow",
+          detail: "WhisperFlow turns speech into text anywhere on your Mac — Claude, Slack, email, wherever your cursor is. Here is why this matters more than it sounds. Most people type at 40 to 60 words per minute and speak at 120 to 150. That is a 2 to 3x productivity difference on every message you send. But the bigger gain is subtler: when you type, you self-edit. You trim context that seems unnecessary, shorten explanations, polish the rough edges. That editing removes exactly the kind of unfiltered detail that makes AI responses better. When you speak to Claude the way you would speak to a capable colleague — thinking out loud, giving full context, not censoring yourself — the quality of what comes back improves noticeably. This is not a nice-to-have. Stop editing. Just talk.",
+          link: "https://whisperflow.app", linkLabel: "whisperflow.app", note: false, copyId: null, copyLabel: null
+        },
+        {
+          label: "Enable accessibility access",
+          detail: "WhisperFlow needs accessibility permissions to type into other apps. When prompted, open <strong>System Settings → Privacy &amp; Security → Accessibility</strong> and enable it there.",
+          link: null, linkLabel: null, note: false, copyId: null, copyLabel: null
+        },
+        {
+          label: "How to use it",
+          detail: "By default, hold <strong>Option (⌥)</strong> while you speak. Release to stop and transcribe. WhisperFlow also has a toggle mode: one tap to start, one tap to stop. To change the trigger key or switch modes, open WhisperFlow Preferences → Shortcuts. The <strong>Fn</strong> key can be assigned there — whether it works on your Mac depends on how your system Fn key is configured.",
+          link: null, linkLabel: null, note: false, copyId: null, copyLabel: null
+        },
+        {
+          label: "Try it: hold Option and dictate a sentence",
+          detail: "Click into any text field — Claude, Slack, Notes — hold Option, speak naturally, release. The text appears. You do not need to edit or correct yourself mid-sentence; just speak your full thought.",
+          link: null, linkLabel: null, note: false, copyId: null, copyLabel: null
+        },
 
-    // Update progress
-    const pct = ((currentStep - 1) / (totalSteps - 1)) * 100;
-    document.getElementById('progressFill').style.width = pct + '%';
+      ]
+    },
 
-    // Update overview checklist icons
-    if (currentStep >= 1) updateChecklist();
+    /* 4 */
+    {
+      num: "05",
+      badge: "Connections · Step 5 of 14",
+      title: "Connect Gmail",
+      tip: "Read-only; Claude drafts replies but you always send them yourself",
+      substeps: [
+        {
+          label: "Open Claude Desktop",
+          detail: "Make sure you are in the <strong>Cowork</strong> tab (not Chat or Code).",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Open Settings",
+          detail: "Click the <strong>⚙ Settings</strong> icon in the bottom-left corner of the sidebar.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Go to Connections",
+          detail: "In the Settings panel, click <strong>Connections</strong> in the left navigation.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Find Gmail and click Connect",
+          detail: "Scroll through the connections list to find Gmail. Click <strong>Connect</strong> next to it.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Sign in with your Fountain Google account",
+          detail: "A browser window will open. Sign in with your <strong>@fountain.net</strong> Google account when prompted.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Review permissions and click Allow",
+          detail: "Google will show you what Claude is requesting access to. These are read-only permissions. Click <strong>Allow</strong> to authorize.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Return to Claude and confirm the connection",
+          detail: "Close the browser tab or return to Claude Desktop. In the Connections list, Gmail should now show as <strong>Connected</strong>.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+
+      ]
+    },
+
+    /* 5 */
+    {
+      num: "06",
+      badge: "Connections · Step 6 of 14",
+      title: "Connect Google Calendar",
+      tip: "Helpful for triage and meeting prep; cannot create or modify calendar events",
+      substeps: [
+        {
+          label: "Go to Settings → Connections in Claude Desktop",
+          detail: "Same path as Gmail: click the <strong>⚙ Settings</strong> icon in the bottom-left, then <strong>Connections</strong>.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Find Google Calendar and click Connect",
+          detail: "Scroll to Google Calendar in the list and click <strong>Connect</strong>.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Sign in with the same Fountain Google account",
+          detail: "Use the same <strong>@fountain.net</strong> account you connected for Gmail. Google may skip the sign-in step if you are already authenticated in the browser.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Review permissions and click Allow",
+          detail: "Calendar access is read-only. Click <strong>Allow</strong>.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Return to Claude and confirm Connected",
+          detail: "Google Calendar should now show as <strong>Connected</strong> in the list.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+
+      ]
+    },
+
+    /* 6 */
+    {
+      num: "07",
+      badge: "Connections · Step 7 of 14",
+      title: "Connect Slack",
+      tip: "Two-way: Claude surfaces Slack threads during triage, and you can send DMs or channel messages directly from Claude without opening Slack. Messages appear in Slack as normal. Works for individuals and groups.",
+      substeps: [
+        {
+          label: "Go to Settings → Connections in Claude Desktop",
+          detail: "Click the <strong>⚙ Settings</strong> icon in the bottom-left, then <strong>Connections</strong>.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Find Slack and click Connect",
+          detail: "Scroll to Slack in the connections list and click <strong>Connect</strong>.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Confirm you are authorizing the right workspace",
+          detail: "A browser window opens to Slack's authorization page. Before clicking anything, check the workspace name in the upper-right corner. It should say <strong>usefountain</strong>. If it shows a different workspace (such as a personal one), click the workspace name to switch it first.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Review permissions and click Allow",
+          detail: "Slack will list what Claude can access — channels, messages, users. Click <strong>Allow</strong>.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Return to Claude and confirm Connected",
+          detail: "Slack should now show as <strong>Connected</strong> in the connections list.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Try it now: send a test message",
+          detail: "Claude can send Slack DMs and channel messages directly from this chat window — no need to leave this platform to open Slack. Try it right now. Copy the prompt below, paste it into the Claude chat, and hit send. It will deliver a 'test' message to Doron in Slack. The message arrives looking like any normal Slack message.",
+          note: false, link: null, linkLabel: null, copyId: "slack_test_msg", copyLabel: "Copy prompt to send a test Slack message"
+        },
+
+      ]
+    },
+
+    /* 7 */
+    {
+      num: "08",
+      badge: "Connections · Step 8 of 14",
+      title: "Connect Notion (if you use it)",
+      tip: "Read-only access to your Notion pages. Useful for drafting, research, and policy questions. If Notion is not part of your workflow, skip this step.",
+      substeps: [
+
+        {
+          label: "Go to Settings → Connections in Claude Desktop",
+          detail: "Click the <strong>⚙ Settings</strong> icon in the bottom-left, then <strong>Connections</strong>.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Find Notion and click Connect",
+          detail: "Scroll to Notion in the connections list and click <strong>Connect</strong>.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Sign in to Notion when prompted",
+          detail: "A browser window opens. Sign in to your Notion account (this may be your personal Notion login, not your Fountain Google account).",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Select which workspaces to share",
+          detail: "Notion will ask which pages or workspaces to give Claude access to. Select your Fountain workspace. You can be selective here — only share what you actually want Claude to reference.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Click Allow Access and return to Claude",
+          detail: "Confirm the permissions and return to Claude Desktop. Notion should show as <strong>Connected</strong>.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+
+      ]
+    },
+
+    /* 8 */
+    {
+      num: "09",
+      badge: "Connections · Step 9 of 14",
+      title: "Set Up Granola",
+      tip: "Granola is the memory of every meeting. Once running, it captures every call automatically. The more meetings it has processed, the more useful this platform becomes.",
+      substeps: [
+        {
+          label: "Join the Fountain team on Granola",
+          detail: "Click the link below to accept your invite to the Fountain Granola workspace.",
+          note: false, link: "https://notes.granola.ai/t/lrbkwk-join-fountain", linkLabel: "Join Fountain on Granola", copyId: null, copyLabel: null
+        },
+        {
+          label: "Download and install the Granola desktop app",
+          detail: "Granola runs silently in the background during your calls. Download it from the link below.",
+          note: false, link: "https://granola.ai", linkLabel: "Download Granola", copyId: null, copyLabel: null
+        },
+        {
+          label: "Open Granola and sign in with your Fountain Google account",
+          detail: "Launch Granola and sign in with your <strong>@fountain.net</strong> Google account.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Grant calendar access when prompted",
+          detail: "Granola needs to see your Google Calendar so it knows which meetings to join automatically. Allow this when the permission dialog appears.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Grant microphone access when prompted",
+          detail: "Granola uses your microphone to transcribe the call. Allow microphone access when macOS asks.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Grant screen recording access when prompted",
+          detail: "On recent versions of macOS, screen recording permission is required for Granola to capture system audio (other participants on calls). Open <strong>System Settings → Privacy &amp; Security → Screen Recording</strong> and enable Granola there.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Enable auto-join in Granola settings",
+          detail: "In Granola, open <strong>Settings → Recording</strong> and turn on <strong>Automatically record calendar events</strong>. From this point forward, Granola will join every meeting on your calendar without any manual action.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Connect Granola to Claude Desktop",
+          detail: "In Claude Desktop, go to <strong>Settings → Connections</strong>. Find Granola in the list and click <strong>Connect</strong>. This is what lets Claude pull in your meeting transcripts during triage.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+
+      ]
+    },
+
+    /* 9 */
+    {
+      num: "10",
+      badge: "Connections · Step 10 of 14",
+      title: "Configure Task Sync",
+      tip: "This is the step most people skip; triage depends on it",
+      substeps: [
+        {
+          label: "Type task-setup into Claude",
+          detail: "Open a Cowork session pointed at your Cowork parent folder and type <strong>task-setup</strong>. The Fountain OS plugin installed this skill automatically. It will create your task board, set up the Granola sync, and wire everything together without you copying any files or pasting any prompts.",
+          link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "What this sets up",
+          detail: "Two things get wired together here. First, action items from your Granola meetings flow automatically into your task list — every meeting produces a set of to-dos that show up in triage without you doing anything. Second, the sync also runs a pass on each transcript looking for cross-functional project updates: decisions made, blockers raised, status changes. Those write to a shared project context layer that the whole team can see. Without this step, triage works but has no task list to draw from — you get calendar and email context only.",
+          link: null, linkLabel: null, copyId: null, copyLabel: null
+        }
+      ]
+    },
+
+    /* 10 */
+    {
+      num: "11",
+      badge: "Connections · Step 11 of 14",
+      title: "Install Claude in Chrome",
+      tip: "Adds Claude directly to your browser for web research, form filling, and page summarization",
+      substeps: [
+        {
+          label: "Install the Chrome extension",
+          detail: "Claude in Chrome puts Claude directly into your browser. You can ask it to summarize a page, extract information, fill out forms, or help with research without switching windows.",
+          link: "https://chromewebstore.google.com/detail/claude/ghkjggjibmcemfpojoodmcniodilkfhb", linkLabel: "Install Claude in Chrome", copyId: null, copyLabel: null
+        },
+        {
+          label: "What this unlocks",
+          detail: "During triage or any research task, Claude can browse pages directly and pull in content. You can also run Claude on any website without leaving the browser.",
+          link: null, linkLabel: null, copyId: null, copyLabel: null
+        }
+      ]
+    },
+
+    /* 11 */
+    {
+      num: "12",
+      badge: "Daily Rhythm · Step 12 of 14",
+      title: "Triage",
+      tip: "Triage is how you start every session. Type it once to get oriented, then work through the list. Type it again any time you want a fresh picture.",
+      substeps: [
+        {
+          label: "Type “triage” to start",
+          detail: "Do this right now. Granola is connected, your calendar is linked, your meetings are flowing in. Type triage and see what comes back. This is the first time the system has everything it needs to give you a full picture.",
+          link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "What you get back",
+          detail: "Two things: a situational summary and a visual task list. The summary covers your calendar for the day, open items from your last session, follow-ups pulled from recent Granola notes, Gmail threads that need a response, and anything flagged in Slack. The task list is a snapshot organized by timeline: Today, This Week, Next Week, Unscheduled, Someday. Together they give you a complete briefing in about 30 seconds.",
+          link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Viewing the list and talking through it",
+          detail: "When triage runs, it opens a visual task board alongside the chat automatically — no extra prompt needed. Every card has a number. Work through the list out loud: “let's talk about 4,” “push 9 to next week,” “mark 7 done.” Claude handles the updates in real time. When you want a fresh view mid-session, say <strong>refresh task viewer</strong> and it rebuilds with the latest state.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Running triage again",
+          detail: "Use <strong>triage</strong> at the start of every session. Mid-session, when you've moved through a batch of items and want a fresh picture, say <strong>refresh task viewer</strong>. Triage re-scans your inputs; refresh task viewer just rebuilds the board from your current task state. Both get you reoriented in seconds.",
+          link: null, linkLabel: null, copyId: null, copyLabel: null
+        }
+      ]
+    },
+
+    /* 12 */
+    {
+      num: "13",
+      badge: "Daily Rhythm · Step 13 of 14",
+      title: "Reflect",
+      tip: "Every session that ends with reflect leaves the system smarter than it found it. This is the habit everything else depends on.",
+      substeps: [
+        {
+          label: "Type reflect to run it",
+          detail: "The Fountain OS plugin installed the reflect skill automatically. You do not need to copy any folders. Just type <strong>reflect</strong> — the system takes it from there.",
+          link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "What reflect does",
+          detail: "At the end of a session, type <strong>reflect</strong>. Claude reviews everything that happened: decisions made, people discussed, projects updated, new terms or context that came up. It proposes all memory updates as a single yes-or-no batch. One keypress commits them to your CLAUDE.md file. The next session starts with all of that already loaded. Note: mistakes you corrected during the session are captured automatically and don't require reflect — more on that below.",
+          link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Run it every session where real work happened.",
+          detail: "Reflect takes 60 seconds. If you skip it, new context from that session — decisions made, people discussed, projects updated — doesn't carry forward. Run it consistently and within a few weeks Claude knows your priorities, your team, your open projects, and how you like to work, without you ever having to re-explain any of it. One note: reflect also auto-triggers when you close a session with phrases like “good night,” “that's all,” or “thanks” — so you don't always need to remember to type it.",
+          link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "When Cowork gets something wrong, say so",
+          detail: "The system has a built-in correction process: any time Claude makes a mistake — wrong format, wrong tone, wrong fact, wrong assumption — and you call it out clearly, the correction is written to your memory file immediately. No command needed. The next session starts with that rule already loaded. But it only works if you say it explicitly. Don't just move on or silently re-do the work. Say “that's wrong” and state what it should be. That one sentence is what makes the system smarter. A vague reaction doesn't register; a clear correction does.",
+          link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Why triage gets better the more you use reflect",
+          detail: "Triage gives you an accurate morning briefing because reflect ran the night before. Your task list stays current because reflect logged what moved. Your team members come up correctly briefed because reflect captured who said what. The compounding is real and fast: a few consistent weeks and the difference between a session with reflect and one without it becomes obvious. Do not skip it.",
+          link: null, linkLabel: null, copyId: null, copyLabel: null
+        }
+      ]
+    },
+
+    /* 13 */
+    {
+      num: "14",
+      badge: "Daily Rhythm · Step 14 of 14",
+      title: "Your First Project",
+      tip: "Takes 5 minutes, pays back every week",
+      substeps: [
+        {
+          label: "Think about your most frequent task",
+          detail: "What do you do repeatedly that involves writing, research, coordination, or decision-making? Prepping for a recurring meeting, drafting provider communications, pulling together weekly updates. Something that comes up at least a few times a month.",
+          link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Create a subfolder for it inside your Cowork folder",
+          detail: "Make a new folder inside Cowork and name it after the task area. For example: <strong>Provider Comms</strong>, <strong>Weekly Reports</strong>, <strong>Clinical Protocols</strong>. This becomes Claude's dedicated workspace for that task type.",
+          link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Copy and paste this prompt into Claude to configure it",
+          detail: "Copy the prompt below and paste it into a new Claude session with your Cowork folder selected. Claude will ask you a few questions and save a context file that permanently gives it background for this task type.",
+          link: null, linkLabel: null, copyId: "first_project", copyLabel: "Copy and paste this prompt into Claude"
+        }
+      ]
+    }
+
+  ];
+
+  // ── USER STATE (persisted via localStorage) ──
+  const STORAGE_KEY = 'fountain-onboarding-v1';
+  let userState = {};
+  try { userState = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e) {}
+
+  let current = (typeof userState._current === 'number') ? userState._current : 0;
+
+  function saveState() {
+    userState._current = current;
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(userState)); } catch(e) {}
   }
 
-  function updateChecklist() {
-    const items = document.querySelectorAll('#overviewChecklist .check-icon');
-    const stepMap = [1, 2, 2, 3, 4]; // which step completes each checklist item
-    items.forEach((icon, i) => {
-      icon.classList.remove('done', 'current');
-      if (currentStep > stepMap[i]) {
-        icon.classList.add('done');
-      } else if (currentStep === stepMap[i]) {
-        icon.classList.add('current');
+  function markStep(idx, status) {
+    // Clicking the active state again = undo
+    if (userState[idx] === status) {
+      delete userState[idx];
+      saveState();
+      render();
+      return;
+    }
+    userState[idx] = status;
+    saveState();
+    render();
+    // Auto-advance after brief visual confirmation
+    if (idx === current && current < STEPS.length - 1) {
+      setTimeout(() => goTo(current + 1), 380);
+    }
+  }
+
+  function render() {
+    const step = STEPS[current];
+    const total = STEPS.length;
+    const pct = Math.round(((current + 1) / total) * 100);
+
+    // Progress
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-frac').textContent =
+      `Step ${current + 1} of ${total}`;
+
+    // Step items
+    document.querySelectorAll('.step-item').forEach((el, i) => {
+      el.classList.remove('active', 'done', 'skipped');
+      const state = userState[i];
+      if (state === 'done') {
+        el.classList.add('done');
+      } else if (state === 'skipped') {
+        el.classList.add('skipped');
       }
+      if (i === current) el.classList.add('active');
     });
-  }
-</script>
 
+    // Inject status controls below active sidebar item (setup steps only)
+    document.querySelectorAll('.step-actions').forEach(el => el.remove());
+    if (current < STEPS.length) {
+      const activeItem = document.querySelector(`.step-item[data-idx="${current}"]`);
+      if (activeItem) {
+        const stepState = userState[current];
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'step-actions';
+        actionsDiv.innerHTML =
+          `<button class="step-action-btn${stepState === 'done' ? ' marked-done' : ''}" onclick="markStep(${current},'done')">${stepState === 'done' ? '&#10003; Done &nbsp;&middot;&nbsp; Undo' : '&#10003; Mark done'}</button>`;
+        activeItem.insertAdjacentElement('afterend', actionsDiv);
+      }
+    }
+
+    // Buttons
+    document.getElementById('btn-back').disabled = current === 0;
+    const nextBtn = document.getElementById('btn-next');
+    if (current === total - 1) {
+      nextBtn.innerHTML = '&#10003; All done!';
+      nextBtn.className = 'btn btn-next finish';
+    } else {
+      nextBtn.innerHTML = 'Next &#8594;';
+      nextBtn.className = 'btn btn-next';
+    }
+
+    // Right content
+    const right = document.getElementById('right-content');
+    right.innerHTML = buildContent(step);
+    right.querySelector('.slide-enter') && void right.querySelector('.slide-enter').offsetWidth;
+  }
+
+  // ── COPY CONTENT ─────────────────────────────────
+  const COPY_CONTENT = {};
+
+  // extend copy content
+  Object.assign(COPY_CONTENT, {
+
+    first_project: [
+      "I'm setting up a dedicated project workspace in my Cowork folder for a recurring task",
+      "I do at Fountain. Help me configure it.",
+      "",
+      "First, ask me these questions, two or three at a time:",
+      "- What is the task? (what you do, what the output looks like)",
+      "- Who are the key people involved?",
+      "- How often does it come up?",
+      "- What context would you need every time to do it well?",
+      "",
+      "Once I've answered, do the following without asking for approval on each step:",
+      "1. Create a subfolder inside my Cowork folder with the right name for this task",
+      "2. Save a context.md file inside it with everything I told you,",
+      "   structured as a permanent briefing for future sessions",
+      "3. Write a short starter prompt at the top of context.md that I can paste",
+      "   at the start of any Claude session for this task type",
+      "",
+      "When done, show me a summary of what you created."
+    ].join('\n')
+  });
+
+    // ── COPY HELPERS ────────────────────────────────────
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function fallbackCopy(text) {
+    const el = document.createElement('textarea');
+    el.value = text;
+    el.style.position = 'fixed';
+    el.style.opacity = '0';
+    document.body.appendChild(el);
+    el.focus();
+    el.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(el);
+  }
+
+  // Slack test message
+  COPY_CONTENT['slack_test_msg'] = 'Send a direct message to Doron Stember in Slack that says: "test"';
+
+
+  async function copyText(id) {
+    const text = COPY_CONTENT[id];
+    if (!text) return;
+    const btn = document.getElementById('copybtn-' + id);
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch(e) {
+      fallbackCopy(text);
+    }
+    if (btn) {
+      const indicator = btn.querySelector('.copy-indicator');
+      btn.classList.add('copied');
+      if (indicator) indicator.textContent = '\u2713 Copied!';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        if (indicator) indicator.textContent = 'Copy';
+      }, 2000);
+    }
+  }
+
+  // ── BUILD CONTENT ─────────────────────────────────────
+  function buildContent(step) {
+    if (step._done) {
+      return `<div class="done-screen slide-enter">
+        <div class="big-check">&#10003;</div>
+        <h2>You're all set.</h2>
+        <p>Your AI chief of staff is ready. Start your first real session by typing <strong>triage</strong> — it'll pull together everything you need before you do anything else.</p>
+        <div class="done-commands">
+          <div class="done-cmd triage"><div class="word">triage</div><div class="when">Start of session</div></div>
+          <div class="done-cmd reflect"><div class="word">reflect</div><div class="when">End of session</div></div>
+        </div>
+      </div>`;
+    }
+
+    const isTriage  = step.title === 'triage';
+    const isReflect = step.title === 'reflect';
+
+    let titleHtml;
+    if (isTriage) {
+      titleHtml = `<div class="step-panel-cmd triage">triage</div>`;
+    } else if (isReflect) {
+      titleHtml = `<div class="step-panel-cmd reflect">reflect</div>`;
+    } else {
+      titleHtml = `<div class="step-panel-title">${escHtml(step.title)}</div>`;
+    }
+
+    let _stepNum = 0;
+    let subHtml;
+    if (step.type === 'intro') {
+      const sections = (step.substeps || []).filter(s => !s.note).map(sub =>
+        `<div class="intro-section">
+          <div class="intro-label">${escHtml(sub.label)}</div>
+          <div class="intro-detail">${sub.detail}</div>
+        </div>`
+      ).join('');
+      const callouts = (step.substeps || []).filter(s => s.note).map(sub =>
+        `<div class="intro-callout">
+          <div class="intro-label">${escHtml(sub.label)}</div>
+          <div class="intro-detail">${sub.detail}</div>
+        </div>`
+      ).join('');
+      subHtml = `<div class="intro-grid">${sections}${callouts}</div>`;
+    } else {
+      subHtml = (step.substeps || []).map((sub, i) => {
+        if (!sub.note) _stepNum++;
+        let extras = '';
+        if (sub.link) {
+          extras += `<a class="substep-link" href="${sub.link}" target="_blank">&#128279; ${escHtml(sub.linkLabel || sub.link)}</a>`;
+        }
+        if (sub.copyId && COPY_CONTENT[sub.copyId]) {
+          extras += `<div class="copy-block">
+            <button class="copy-btn" id="copybtn-${sub.copyId}" onclick="copyText('${sub.copyId}')">
+              <span class="copy-indicator">Copy</span>
+            </button>
+            <code class="copy-code">${escHtml(COPY_CONTENT[sub.copyId])}</code>
+          </div>`;
+        }
+        const numEl = sub.note
+          ? `<div class="substep-icon">&#8505;</div>`
+          : `<div class="substep-num">${_stepNum}</div>`;
+        return `<div class="substep">
+          ${numEl}
+          <div class="substep-body">
+            <div class="substep-label">${escHtml(sub.label)}</div>
+            <div class="substep-detail">${sub.detail}</div>
+            ${extras}
+          </div>
+        </div>`;
+      }).join('\n      ');
+    }
+
+    return `<div class="step-panel slide-enter">
+      <div class="step-panel-header">
+        <div class="step-panel-badge">${escHtml(step.badge)}</div>
+        ${titleHtml}
+        ${step.tip ? `<div class="step-panel-tip">&#128161; ${escHtml(step.tip)}</div>` : ''}
+      </div>
+      <div class="substeps">
+        ${subHtml}
+      </div>
+    </div>`;
+  }
+
+  function goTo(idx) {
+    if (idx < 0 || idx >= STEPS.length) return;
+    current = idx;
+    saveState();
+    render();
+  }
+
+  function goNext() {
+    if (current < STEPS.length - 1) {
+      goTo(current + 1);
+    } else {
+      // Show done screen
+      const right = document.getElementById('right-content');
+      right.innerHTML = buildContent({ _done: true });
+      document.querySelectorAll('.step-item').forEach(el => el.classList.add('done'));
+      document.getElementById('btn-next').disabled = true;
+      document.getElementById('progress-fill').style.width = '100%';
+      document.getElementById('progress-frac').textContent = 'Complete!';
+    }
+  }
+
+  function goBack() {
+    if (current > 0) goTo(current - 1);
+  }
+
+  // Keyboard nav
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goNext();
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goBack();
+  });
+
+  // ── SVG ILLUSTRATIONS ──
+
+  function svgCoworkFolder() {
+    return `<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+      <!-- Large parent Cowork folder (navy) -->
+      <path d="M44 80 Q44 68 56 68 L144 68 L160 52 L356 52 Q368 52 368 64 L368 146 Q368 158 356 158 L56 158 Q44 158 44 146 Z" fill="#213364"/>
+      <text x="206" y="107" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="17" font-weight="700" fill="#EBE4CE" letter-spacing="0.04em">Cowork</text>
+      <!-- "Always open this" indicator -->
+      <rect x="94" y="164" width="224" height="22" rx="5" fill="#D4F4F6" stroke="#00B7C5" stroke-width="1"/>
+      <text x="206" y="179" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="9.5" font-weight="700" fill="#006b73" letter-spacing="0.09em">ALWAYS OPEN THIS FOLDER</text>
+      <!-- Branch -->
+      <line x1="206" y1="186" x2="206" y2="200" stroke="#7A6F62" stroke-width="1.5" opacity="0.5"/>
+      <line x1="113" y1="200" x2="300" y2="200" stroke="#7A6F62" stroke-width="1.5" opacity="0.5"/>
+      <line x1="113" y1="200" x2="113" y2="210" stroke="#7A6F62" stroke-width="1.5" opacity="0.5"/>
+      <line x1="206" y1="200" x2="206" y2="210" stroke="#7A6F62" stroke-width="1.5" opacity="0.5"/>
+      <line x1="300" y1="200" x2="300" y2="210" stroke="#7A6F62" stroke-width="1.5" opacity="0.5"/>
+      <!-- Subfolder 1 -->
+      <rect x="58" y="208" width="110" height="42" rx="6" fill="#F5F2EA" stroke="#DDD7C8" stroke-width="1.5"/>
+      <rect x="58" y="208" width="38" height="11" rx="3" fill="#DDD7C8"/>
+      <text x="113" y="235" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="10" font-weight="600" fill="#7A6F62">Clinical</text>
+      <!-- Subfolder 2 -->
+      <rect x="151" y="208" width="110" height="42" rx="6" fill="#F5F2EA" stroke="#DDD7C8" stroke-width="1.5"/>
+      <rect x="151" y="208" width="38" height="11" rx="3" fill="#DDD7C8"/>
+      <text x="206" y="235" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="10" font-weight="600" fill="#7A6F62">Projects</text>
+      <!-- Subfolder 3 -->
+      <rect x="244" y="208" width="110" height="42" rx="6" fill="#F5F2EA" stroke="#DDD7C8" stroke-width="1.5"/>
+      <rect x="244" y="208" width="38" height="11" rx="3" fill="#DDD7C8"/>
+      <text x="299" y="235" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="10" font-weight="600" fill="#7A6F62">Legal Docs</text>
+    </svg>`;
+  }
+
+  function svgLaptop() {
+    return `<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+      <rect x="60" y="30" width="280" height="175" rx="12" fill="#EBE4CE" stroke="#213364" stroke-width="3"/>
+      <rect x="78" y="48" width="244" height="140" rx="5" fill="#213364"/>
+      <!-- Screen content: Claude interface -->
+      <rect x="90" y="60" width="220" height="16" rx="4" fill="#2d4180" opacity="0.8"/>
+      <rect x="90" y="84" width="160" height="10" rx="3" fill="#3a5299" opacity="0.6"/>
+      <rect x="90" y="100" width="200" height="10" rx="3" fill="#3a5299" opacity="0.5"/>
+      <rect x="90" y="116" width="140" height="10" rx="3" fill="#3a5299" opacity="0.4"/>
+      <!-- Input bar -->
+      <rect x="90" y="145" width="220" height="28" rx="5" fill="#EBE4CE" opacity="0.15"/>
+      <circle cx="302" cy="159" r="7" fill="#00B7C5" opacity="0.8"/>
+      <!-- Keyboard -->
+      <rect x="20" y="205" width="360" height="24" rx="6" fill="#D4CEBD" stroke="#213364" stroke-width="2"/>
+      <!-- Hinge -->
+      <rect x="60" y="203" width="280" height="6" rx="2" fill="#B8B0A0"/>
+    </svg>`;
+  }
+
+  function svgTeam() {
+    return `<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+      <!-- Center user -->
+      <circle cx="200" cy="100" r="34" fill="#213364"/>
+      <circle cx="200" cy="88" r="14" fill="#EBE4CE"/>
+      <path d="M172 130 Q200 115 228 130" stroke="#EBE4CE" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <!-- Left user -->
+      <circle cx="100" cy="110" r="28" fill="#EBE4CE" stroke="#213364" stroke-width="2.5"/>
+      <circle cx="100" cy="100" r="11" fill="#213364"/>
+      <path d="M79 133 Q100 121 121 133" stroke="#213364" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+      <!-- Right user -->
+      <circle cx="300" cy="110" r="28" fill="#EBE4CE" stroke="#213364" stroke-width="2.5"/>
+      <circle cx="300" cy="100" r="11" fill="#213364"/>
+      <path d="M279 133 Q300 121 321 133" stroke="#213364" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+      <!-- Connecting lines -->
+      <line x1="128" y1="110" x2="166" y2="104" stroke="#00B7C5" stroke-width="2" stroke-dasharray="5,4" opacity="0.7"/>
+      <line x1="234" y1="104" x2="272" y2="110" stroke="#00B7C5" stroke-width="2" stroke-dasharray="5,4" opacity="0.7"/>
+      <!-- Checkmark badge -->
+      <circle cx="228" cy="74" r="18" fill="#00B7C5"/>
+      <polyline points="219,74 225,80 237,67" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- Label -->
+      <rect x="130" y="180" width="140" height="28" rx="6" fill="#213364" opacity="0.1"/>
+      <text x="200" y="199" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="12" font-weight="700" fill="#213364" letter-spacing="0.08em">FOUNTAIN WORKSPACE</text>
+    </svg>`;
+  }
+
+  function svgEmail() {
+    return `<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+      <!-- Envelope body -->
+      <rect x="60" y="70" width="280" height="170" rx="10" fill="#EBE4CE" stroke="#213364" stroke-width="2.5"/>
+      <!-- Envelope flap -->
+      <polyline points="60,80 200,165 340,80" stroke="#213364" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+      <!-- Left fold line -->
+      <line x1="60" y1="240" x2="155" y2="155" stroke="#213364" stroke-width="1.5" opacity="0.3"/>
+      <!-- Right fold line -->
+      <line x1="340" y1="240" x2="245" y2="155" stroke="#213364" stroke-width="1.5" opacity="0.3"/>
+      <!-- Connection dots -->
+      <circle cx="200" cy="35" r="8" fill="#00B7C5"/>
+      <circle cx="200" cy="35" r="14" fill="none" stroke="#00B7C5" stroke-width="2" opacity="0.4"/>
+      <line x1="200" y1="49" x2="200" y2="68" stroke="#00B7C5" stroke-width="2" stroke-dasharray="4,3"/>
+      <!-- Triage label -->
+      <rect x="268" y="88" width="56" height="20" rx="4" fill="#213364" opacity="0.12"/>
+      <text x="296" y="102" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="9" font-weight="700" fill="#213364" letter-spacing="0.08em">TRIAGE</text>
+    </svg>`;
+  }
+
+  function svgCalendar() {
+    return `<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+      <rect x="70" y="55" width="260" height="175" rx="10" fill="#EBE4CE" stroke="#213364" stroke-width="2.5"/>
+      <!-- Header band -->
+      <rect x="70" y="55" width="260" height="44" rx="10" fill="#213364"/>
+      <rect x="70" y="79" width="260" height="20" fill="#213364"/>
+      <!-- Month label -->
+      <text x="200" y="83" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="14" font-weight="700" fill="#EBE4CE" letter-spacing="0.1em">FEBRUARY</text>
+      <!-- Ring posts -->
+      <rect x="125" y="42" width="10" height="28" rx="5" fill="#7A6F62"/>
+      <rect x="265" y="42" width="10" height="28" rx="5" fill="#7A6F62"/>
+      <!-- Day grid -->
+      <g font-family="-apple-system,sans-serif" font-size="11" text-anchor="middle" fill="#213364" opacity="0.5" font-weight="600">
+        <text x="108" y="120">M</text><text x="148" y="120">T</text><text x="188" y="120">W</text>
+        <text x="228" y="120">T</text><text x="268" y="120">F</text><text x="308" y="120">S</text>
+      </g>
+      <!-- Week 1 -->
+      <g font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" fill="#213364">
+        <text x="108" y="143">3</text><text x="148" y="143">4</text><text x="188" y="143">5</text>
+        <text x="228" y="143">6</text><text x="268" y="143">7</text><text x="308" y="143">8</text>
+      </g>
+      <!-- Week 2 — highlighted today -->
+      <circle cx="148" cy="167" r="13" fill="#213364"/>
+      <g font-family="-apple-system,sans-serif" font-size="12" text-anchor="middle" fill="#213364">
+        <text x="108" y="172">10</text>
+        <text x="148" y="172" fill="#EBE4CE" font-weight="700">11</text>
+        <text x="188" y="172">12</text><text x="228" y="172">13</text>
+        <text x="268" y="172">14</text><text x="308" y="172">15</text>
+      </g>
+      <!-- Event block -->
+      <rect x="86" y="188" width="168" height="18" rx="4" fill="#00B7C5" opacity="0.75"/>
+      <text x="170" y="201" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="10" font-weight="700" fill="white">Provider Huddle 11:00am</text>
+    </svg>`;
+  }
+
+  function svgSlack() {
+    return `<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+      <!-- Chat bubble 1 (incoming) -->
+      <rect x="55" y="48" width="210" height="52" rx="12" fill="#EBE4CE" stroke="#213364" stroke-width="2"/>
+      <polygon points="72,100 58,118 88,100" fill="#EBE4CE" stroke="#213364" stroke-width="2" stroke-linejoin="round"/>
+      <rect x="70" y="62" width="140" height="9" rx="4" fill="#213364" opacity="0.3"/>
+      <rect x="70" y="78" width="100" height="9" rx="4" fill="#213364" opacity="0.2"/>
+      <!-- Avatar left -->
+      <circle cx="42" cy="125" r="16" fill="#213364"/>
+      <text x="42" y="131" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="#EBE4CE">DS</text>
+      <!-- Chat bubble 2 (outgoing, right) -->
+      <rect x="135" y="128" width="210" height="52" rx="12" fill="#213364"/>
+      <polygon points="328,180 342,198 312,180" fill="#213364"/>
+      <rect x="150" y="142" width="140" height="9" rx="4" fill="#EBE4CE" opacity="0.4"/>
+      <rect x="150" y="158" width="100" height="9" rx="4" fill="#EBE4CE" opacity="0.25"/>
+      <!-- Channel tag -->
+      <rect x="55" y="195" width="112" height="22" rx="5" fill="#EBE4CE" stroke="#213364" stroke-width="1.5"/>
+      <text x="111" y="210" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="10" font-weight="700" fill="#213364">#clinical-team</text>
+      <!-- Lightning / fast tag -->
+      <circle cx="358" cy="58" r="20" fill="#00B7C5" opacity="0.15"/>
+      <text x="358" y="65" text-anchor="middle" font-size="20">&#9889;</text>
+    </svg>`;
+  }
+
+  function svgNotion() {
+    return `<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+      <!-- Page shadow -->
+      <rect x="118" y="42" width="180" height="200" rx="8" fill="#D4CEBD"/>
+      <!-- Main page -->
+      <rect x="108" y="34" width="180" height="200" rx="8" fill="#FDFCF8" stroke="#213364" stroke-width="2"/>
+      <!-- Dog-ear fold -->
+      <polygon points="258,34 288,34 258,62" fill="#EBE4CE" stroke="#213364" stroke-width="1.5"/>
+      <!-- Content lines -->
+      <rect x="122" y="54" width="120" height="12" rx="4" fill="#213364" opacity="0.8"/>
+      <rect x="122" y="74" width="150" height="7" rx="3" fill="#213364" opacity="0.15"/>
+      <rect x="122" y="88" width="130" height="7" rx="3" fill="#213364" opacity="0.12"/>
+      <rect x="122" y="102" width="145" height="7" rx="3" fill="#213364" opacity="0.12"/>
+      <!-- Divider -->
+      <line x1="122" y1="120" x2="272" y2="120" stroke="#DDD7C8" stroke-width="1.5"/>
+      <!-- Bullet list -->
+      <circle cx="128" cy="134" r="3" fill="#213364" opacity="0.5"/>
+      <rect x="136" y="130" width="110" height="7" rx="3" fill="#213364" opacity="0.12"/>
+      <circle cx="128" cy="150" r="3" fill="#213364" opacity="0.5"/>
+      <rect x="136" y="146" width="90" height="7" rx="3" fill="#213364" opacity="0.12"/>
+      <circle cx="128" cy="166" r="3" fill="#213364" opacity="0.5"/>
+      <rect x="136" y="162" width="120" height="7" rx="3" fill="#213364" opacity="0.12"/>
+      <!-- Skip badge -->
+      <rect x="84" y="175" width="56" height="26" rx="6" fill="#EBE4CE" stroke="#DDD7C8" stroke-width="1.5"/>
+      <text x="112" y="192" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="9" font-weight="700" fill="#7A6F62">OPTIONAL</text>
+    </svg>`;
+  }
+
+  function svgDrive() {
+    return `<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+      <!-- Folder -->
+      <path d="M60 100 Q60 88 72 88 L152 88 L168 72 L320 72 Q332 72 332 84 L332 196 Q332 208 320 208 L72 208 Q60 208 60 196 Z" fill="#EBE4CE" stroke="#213364" stroke-width="2.5"/>
+      <!-- Folder inner shading -->
+      <rect x="72" y="100" width="248" height="96" rx="2" fill="#FDFCF8" opacity="0.5"/>
+      <!-- Sync arrows (circular) -->
+      <circle cx="196" cy="152" r="32" fill="none" stroke="#213364" stroke-width="2.5" stroke-dasharray="6,4" opacity="0.3"/>
+      <path d="M196 120 A32 32 0 1 1 164 152" stroke="#213364" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.8"/>
+      <polygon points="164,144 154,152 167,158" fill="#213364" opacity="0.8"/>
+      <!-- Drive icon top -->
+      <circle cx="196" cy="48" r="18" fill="#213364"/>
+      <text x="196" y="55" text-anchor="middle" font-size="14" fill="#EBE4CE">&#9729;</text>
+      <line x1="196" y1="66" x2="196" y2="86" stroke="#213364" stroke-width="2" stroke-dasharray="4,3"/>
+    </svg>`;
+  }
+
+  function svgGranola() {
+    return `<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+      <!-- Microphone -->
+      <rect x="178" y="44" width="44" height="68" rx="22" fill="#213364"/>
+      <rect x="186" y="52" width="28" height="52" rx="14" fill="#2d4180"/>
+      <!-- Mic stand -->
+      <path d="M200 148 Q200 170 200 180" stroke="#213364" stroke-width="3" stroke-linecap="round"/>
+      <line x1="178" y1="180" x2="222" y2="180" stroke="#213364" stroke-width="3" stroke-linecap="round"/>
+      <!-- Sound arc -->
+      <path d="M152 100 Q150 112 152 124" stroke="#213364" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.4"/>
+      <path d="M138 90 Q135 112 138 134" stroke="#213364" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.25"/>
+      <path d="M248 100 Q250 112 248 124" stroke="#213364" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.4"/>
+      <path d="M262 90 Q265 112 262 134" stroke="#213364" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.25"/>
+      <!-- Notes flowing out -->
+      <rect x="268" y="52" width="82" height="10" rx="4" fill="#EBE4CE" stroke="#213364" stroke-width="1.5"/>
+      <rect x="268" y="70" width="66" height="10" rx="4" fill="#EBE4CE" stroke="#213364" stroke-width="1.5"/>
+      <rect x="268" y="88" width="76" height="10" rx="4" fill="#EBE4CE" stroke="#213364" stroke-width="1.5"/>
+      <rect x="268" y="106" width="58" height="10" rx="4" fill="#EBE4CE" stroke="#213364" stroke-width="1.5"/>
+      <!-- Action item badge -->
+      <rect x="268" y="128" width="82" height="22" rx="5" fill="#00B7C5" opacity="0.85"/>
+      <text x="309" y="143" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="9.5" font-weight="700" fill="white" letter-spacing="0.06em">ACTION ITEMS</text>
+      <!-- Arrow -->
+      <line x1="260" y1="139" x2="270" y2="139" stroke="#00B7C5" stroke-width="2"/>
+    </svg>`;
+  }
+
+  function svgTaskSync() {
+    return `<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+      <!-- Granola / meeting notes on left -->
+      <rect x="28" y="68" width="100" height="124" rx="8" fill="#EBE4CE" stroke="#213364" stroke-width="2"/>
+      <rect x="28" y="68" width="100" height="28" rx="8" fill="#213364"/>
+      <rect x="28" y="82" width="100" height="14" fill="#213364"/>
+      <text x="78" y="87" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="8.5" font-weight="700" fill="#EBE4CE" letter-spacing="0.08em">GRANOLA</text>
+      <!-- Meeting lines -->
+      <rect x="40" y="108" width="76" height="7" rx="3" fill="#213364" opacity="0.2"/>
+      <rect x="40" y="122" width="60" height="7" rx="3" fill="#213364" opacity="0.15"/>
+      <rect x="40" y="136" width="70" height="7" rx="3" fill="#213364" opacity="0.15"/>
+      <rect x="40" y="150" width="50" height="7" rx="3" fill="#213364" opacity="0.15"/>
+      <!-- Mic icon -->
+      <rect x="66" y="162" width="24" height="16" rx="5" fill="#213364" opacity="0.4"/>
+      <!-- Arrow / Claude in middle -->
+      <line x1="130" y1="130" x2="168" y2="130" stroke="#213364" stroke-width="2" stroke-dasharray="5,3" opacity="0.5"/>
+      <circle cx="200" cy="130" r="28" fill="#213364"/>
+      <text x="200" y="125" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="8" font-weight="700" fill="#EBE4CE" letter-spacing="0.06em">CLAUDE</text>
+      <text x="200" y="137" text-anchor="middle" font-size="14" fill="#EBE4CE">&#9881;</text>
+      <line x1="228" y1="130" x2="266" y2="130" stroke="#213364" stroke-width="2" stroke-dasharray="5,3" opacity="0.5"/>
+      <polygon points="264,124 276,130 264,136" fill="#213364" opacity="0.7"/>
+      <!-- Task list on right -->
+      <rect x="272" y="68" width="100" height="124" rx="8" fill="#FDFCF8" stroke="#213364" stroke-width="2"/>
+      <rect x="272" y="68" width="100" height="28" rx="8" fill="#00B7C5" opacity="0.85"/>
+      <rect x="272" y="82" width="100" height="14" fill="#00B7C5" opacity="0.85"/>
+      <text x="322" y="87" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="8.5" font-weight="700" fill="white" letter-spacing="0.08em">TASKS</text>
+      <!-- Task items with checkboxes -->
+      <rect x="284" y="106" width="10" height="10" rx="2" fill="none" stroke="#213364" stroke-width="1.5" opacity="0.5"/>
+      <rect x="284" y="122" width="10" height="10" rx="2" fill="none" stroke="#213364" stroke-width="1.5" opacity="0.5"/>
+      <rect x="284" y="138" width="10" height="10" rx="2" fill="none" stroke="#213364" stroke-width="1.5" opacity="0.5"/>
+      <rect x="284" y="154" width="10" height="10" rx="2" fill="none" stroke="#213364" stroke-width="1.5" opacity="0.5"/>
+      <rect x="298" y="108" width="62" height="6" rx="3" fill="#213364" opacity="0.2"/>
+      <rect x="298" y="124" width="50" height="6" rx="3" fill="#213364" opacity="0.15"/>
+      <rect x="298" y="140" width="58" height="6" rx="3" fill="#213364" opacity="0.15"/>
+      <rect x="298" y="156" width="44" height="6" rx="3" fill="#213364" opacity="0.15"/>
+      <!-- "Auto" badge -->
+      <rect x="130" y="196" width="140" height="22" rx="6" fill="#213364" opacity="0.08"/>
+      <text x="200" y="211" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="10" font-weight="700" fill="#213364" letter-spacing="0.09em" opacity="0.7">SYNCS AUTOMATICALLY</text>
+    </svg>`;
+  }
+
+  function svgReflectSetup() {
+    return `<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+      <!-- Brain outline (simple) -->
+      <ellipse cx="200" cy="120" rx="80" ry="70" fill="#EBE4CE" stroke="#213364" stroke-width="2.5"/>
+      <path d="M200 52 Q218 58 224 72 Q242 68 250 82 Q268 80 272 98 Q284 110 278 128 Q286 142 278 156 Q272 170 254 172 Q246 186 228 186 Q214 196 200 192" stroke="#213364" stroke-width="2" fill="none" opacity="0.35"/>
+      <!-- Loop arrow inside brain area -->
+      <path d="M174 100 A34 34 0 1 1 226 100" stroke="#213364" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.7"/>
+      <polygon points="174,100 162,94 166,108" fill="#213364" opacity="0.7"/>
+      <!-- Memory dots -->
+      <circle cx="192" cy="128" r="5" fill="#213364" opacity="0.5"/>
+      <circle cx="208" cy="128" r="5" fill="#213364" opacity="0.5"/>
+      <circle cx="200" cy="142" r="5" fill="#213364" opacity="0.5"/>
+      <!-- Skill badge -->
+      <rect x="255" y="42" width="80" height="26" rx="7" fill="#213364"/>
+      <text x="295" y="59" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="10" font-weight="700" fill="#EBE4CE" letter-spacing="0.07em">SKILL</text>
+      <line x1="255" y1="55" x2="270" y2="90" stroke="#213364" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.5"/>
+      <!-- Install label -->
+      <rect x="108" y="196" width="184" height="28" rx="7" fill="#213364" opacity="0.1"/>
+      <text x="200" y="214" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="#213364" letter-spacing="0.08em">INSTALL ONCE · WORKS FOREVER</text>
+    </svg>`;
+  }
+
+  function svgVoice() {
+    return `<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+      <!-- Mic body -->
+      <rect x="174" y="50" width="52" height="90" rx="26" fill="#213364"/>
+      <rect x="184" y="60" width="32" height="70" rx="16" fill="#2d4180"/>
+      <!-- Stand arc -->
+      <path d="M140 118 Q140 178 200 178 Q260 178 260 118" stroke="#213364" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+      <!-- Pole -->
+      <line x1="200" y1="178" x2="200" y2="205" stroke="#213364" stroke-width="3.5" stroke-linecap="round"/>
+      <line x1="172" y1="205" x2="228" y2="205" stroke="#213364" stroke-width="3.5" stroke-linecap="round"/>
+      <!-- Sound waves left -->
+      <path d="M118 80 Q112 95 118 110" stroke="#00B7C5" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.7"/>
+      <path d="M100 68 Q90 95 100 122" stroke="#00B7C5" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.45"/>
+      <path d="M82 56 Q68 95 82 134" stroke="#00B7C5" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.25"/>
+      <!-- Sound waves right -->
+      <path d="M282 80 Q288 95 282 110" stroke="#00B7C5" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.7"/>
+      <path d="M300 68 Q310 95 300 122" stroke="#00B7C5" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.45"/>
+      <path d="M318 56 Q332 95 318 134" stroke="#00B7C5" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.25"/>
+      <!-- Option key badge -->
+      <rect x="144" y="218" width="112" height="28" rx="7" fill="#EBE4CE" stroke="#213364" stroke-width="1.5"/>
+      <text x="200" y="236" text-anchor="middle" font-family="-apple-system, Helvetica, sans-serif" font-size="11" font-weight="700" fill="#213364">&#8997; Hold Option to dictate</text>
+    </svg>`;
+  }
+
+  function svgTriage() {
+    return `<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+      <!-- Sun (morning) -->
+      <circle cx="200" cy="64" r="28" fill="#C9813A" opacity="0.85"/>
+      <g stroke="#C9813A" stroke-width="2.5" stroke-linecap="round" opacity="0.5">
+        <line x1="200" y1="22" x2="200" y2="14"/>
+        <line x1="226" y1="30" x2="231" y2="24"/>
+        <line x1="242" y1="56" x2="250" y2="53"/>
+        <line x1="174" y1="30" x2="169" y2="24"/>
+        <line x1="158" y1="56" x2="150" y2="53"/>
+      </g>
+      <!-- Checklist card -->
+      <rect x="90" y="102" width="220" height="138" rx="10" fill="#FDFCF8" stroke="#213364" stroke-width="2"/>
+      <!-- Card header -->
+      <rect x="90" y="102" width="220" height="34" rx="10" fill="#213364"/>
+      <rect x="90" y="120" width="220" height="16" fill="#213364"/>
+      <text x="200" y="124" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" font-weight="700" fill="#EBE4CE" letter-spacing="0.1em">TODAY'S TRIAGE</text>
+      <!-- Items -->
+      <g font-family="-apple-system,sans-serif" font-size="11.5" fill="#213364">
+        <!-- Row 1 -->
+        <rect x="106" y="145" width="14" height="14" rx="3" fill="#213364" opacity="0.15" stroke="#213364" stroke-width="1.5"/>
+        <polyline points="108,152 112,156 120,148" stroke="#213364" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7"/>
+        <text x="128" y="157" fill="#213364" opacity="0.6" font-size="11">Calendar checked</text>
+        <!-- Row 2 -->
+        <rect x="106" y="165" width="14" height="14" rx="3" fill="none" stroke="#213364" stroke-width="1.5" opacity="0.4"/>
+        <text x="128" y="177" fill="#213364" opacity="0.5" font-size="11">Open tasks surfaced</text>
+        <!-- Row 3 -->
+        <rect x="106" y="185" width="14" height="14" rx="3" fill="none" stroke="#213364" stroke-width="1.5" opacity="0.4"/>
+        <text x="128" y="197" fill="#213364" opacity="0.5" font-size="11">Granola notes scanned</text>
+        <!-- Row 4 -->
+        <rect x="106" y="205" width="14" height="14" rx="3" fill="none" stroke="#213364" stroke-width="1.5" opacity="0.4"/>
+        <text x="128" y="217" fill="#213364" opacity="0.5" font-size="11">Gmail + Slack reviewed</text>
+      </g>
+    </svg>`;
+  }
+
+  function svgReflect() {
+    return `<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+      <!-- Session represented as a scroll / document -->
+      <rect x="100" y="40" width="200" height="140" rx="8" fill="#EBE4CE" stroke="#213364" stroke-width="2.5"/>
+      <rect x="108" y="54" width="184" height="8" rx="3" fill="#213364" opacity="0.25"/>
+      <rect x="108" y="70" width="150" height="6" rx="3" fill="#213364" opacity="0.15"/>
+      <rect x="108" y="84" width="170" height="6" rx="3" fill="#213364" opacity="0.15"/>
+      <rect x="108" y="98" width="130" height="6" rx="3" fill="#213364" opacity="0.15"/>
+      <rect x="108" y="112" width="160" height="6" rx="3" fill="#213364" opacity="0.15"/>
+      <!-- Loop arrow (memory update) -->
+      <path d="M200 184 A50 50 0 1 1 260 234" stroke="#213364" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <polygon points="260,224 272,234 254,240" fill="#213364"/>
+      <!-- Stars / sparkles = new memories -->
+      <text x="130" y="240" font-size="16" opacity="0.6">&#10024;</text>
+      <text x="158" y="252" font-size="12" opacity="0.4">&#10024;</text>
+      <!-- Memory lock -->
+      <circle cx="316" cy="192" r="22" fill="#213364"/>
+      <rect x="307" y="190" width="18" height="14" rx="3" fill="#EBE4CE"/>
+      <rect x="311" y="182" width="10" height="12" rx="5" fill="none" stroke="#EBE4CE" stroke-width="2.5"/>
+      <!-- Label -->
+      <rect x="90" y="136" width="220" height="20" rx="5" fill="#213364" opacity="0.08"/>
+      <text x="200" y="150" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="10.5" font-weight="700" fill="#213364" letter-spacing="0.09em" opacity="0.7">CONTEXT SAVED · MEMORY UPDATED</text>
+    </svg>`;
+  }
+
+  function svgChrome() {
+    return `<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+      <!-- Browser window frame -->
+      <rect x="44" y="28" width="312" height="200" rx="10" fill="#EBE4CE" stroke="#213364" stroke-width="2.5"/>
+      <!-- Browser toolbar -->
+      <rect x="44" y="28" width="312" height="40" rx="10" fill="#213364"/>
+      <rect x="44" y="50" width="312" height="18" fill="#213364"/>
+      <!-- Traffic lights -->
+      <circle cx="68" cy="48" r="6" fill="#C9813A" opacity="0.7"/>
+      <circle cx="87" cy="48" r="6" fill="#C9813A" opacity="0.45"/>
+      <circle cx="106" cy="48" r="6" fill="#C9813A" opacity="0.25"/>
+      <!-- Address bar -->
+      <rect x="122" y="38" width="172" height="20" rx="4" fill="rgba(255,255,255,0.12)"/>
+      <text x="208" y="52" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="9" fill="rgba(235,228,206,0.55)" letter-spacing="0.03em">drive.google.com/drive/folders</text>
+      <!-- Extension icon in toolbar -->
+      <circle cx="330" cy="48" r="13" fill="#00B7C5"/>
+      <text x="330" y="53" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="800" fill="white">C</text>
+      <!-- Page content lines -->
+      <rect x="64" y="84" width="60" height="8" rx="3" fill="#213364" opacity="0.15"/>
+      <rect x="64" y="100" width="272" height="7" rx="3" fill="#213364" opacity="0.09"/>
+      <rect x="64" y="113" width="240" height="7" rx="3" fill="#213364" opacity="0.08"/>
+      <rect x="64" y="126" width="260" height="7" rx="3" fill="#213364" opacity="0.07"/>
+      <!-- Claude action overlay -->
+      <rect x="220" y="148" width="128" height="64" rx="8" fill="white" stroke="#DDD7C8" stroke-width="1.5"/>
+      <rect x="220" y="148" width="128" height="20" rx="8" fill="#213364"/>
+      <rect x="220" y="158" width="128" height="10" fill="#213364"/>
+      <text x="284" y="162" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="8" font-weight="700" fill="#EBE4CE" letter-spacing="0.07em">CLAUDE IN CHROME</text>
+      <rect x="232" y="178" width="84" height="6" rx="2" fill="#213364" opacity="0.12"/>
+      <rect x="232" y="190" width="62" height="6" rx="2" fill="#213364" opacity="0.08"/>
+      <!-- Cursor pointer indicating click action -->
+      <polygon points="172,158 172,185 178,179 183,190 187,188 182,177 190,177" fill="#213364" opacity="0.6"/>
+    </svg>`;
+  }
+
+  // Initial render
+  render();
+</script>
 </body>
 </html>
