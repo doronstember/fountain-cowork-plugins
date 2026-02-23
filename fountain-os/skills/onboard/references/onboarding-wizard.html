@@ -1085,7 +1085,7 @@
         },
         {
           label: "Talk, don't type",
-          detail: "This onboarding wizard will direct you to download a voice-to-text app called WhisperFlow. Talking is 2-3x faster than typing, but the bigger gain is subtler: when you type, you self-edit. You trim context that seems unnecessary. That editing removes exactly the kind of detail that makes responses better. Speak the way you would to a capable colleague — thinking out loud, giving full context — and the quality of what comes back improves noticeably.<br><br><strong>Always correct the system when it is wrong — and say what it should do instead.</strong> This is not just feedback. Fountain OS has a built-in self-correction process: every time you explicitly correct a mistake, the system writes a rule to your memory file and loads it at the start of every future session. It gets permanently smarter from that correction. But it only works if you state the correction clearly — both what was wrong and what to do instead. “Don't use dashes, use commas” is a correction the system can learn from. “That's wrong” alone is not. The more precisely you correct it, the less you'll ever have to correct it again.<br><br>Get into the habit of asking for its recommendations. Don't accept the first “I can't do that.” If it tells you something requires manual steps, push back: say you don't want to do any manual steps and ask what it can do instead. It won't always have a solution, but capabilities expand constantly and it's always worth testing the limits.",
+          detail: "This onboarding wizard will direct you to download WhisperFlow, a voice-to-text app. Talking is 2-3x faster than typing, but the bigger gain is subtler: when you type, you self-edit and trim context. Speaking naturally gives Claude the full picture it needs.<br><ul><li><strong>Engage like you're talking to a high-level chief of staff.</strong> Think out loud, give full context, challenge the response: \"that option sounds better but I'm concerned about X; what are the relative downsides compared to Y?\"</li><li><strong>Don't accept the first \"I can't do that.\"</strong> Say \"I want you to find a way\" or similar. Push back before accepting a limitation.</li><li><strong>If it says something requires manual steps, push back.</strong> Ask what it can do instead. Manual steps are often avoidable.</li><li><strong>Pushing back won't always get a better result, but often it does.</strong> It's worth the extra prompt.</li><li><strong>Claude's capabilities are expanding constantly.</strong> Something that required manual steps last month may be fully automatable now. Always test the limits.</li><li><strong>Always correct the system explicitly when it's wrong.</strong> Say what was wrong and what to do instead. Every clear correction gets saved to your memory file and applied at the start of every future session. The more precisely you correct it, the less you'll ever need to again.</li></ul>",
           note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
         },
         {
@@ -1097,6 +1097,11 @@
           label: "PHI Boundary",
           detail: "Fountain OS is for operational and strategic work only. Do not enter patient PHI. Clinical documentation must stay in clinical systems.",
           note: true, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Ready to continue",
+          detail: "Once you've finished reading this orientation, click <strong>Mark done</strong> below and move on to step 2.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
         }
       ]
     },
