@@ -18,7 +18,9 @@ Set up a new team member's personal Fountain OS workspace. Run the full sequence
 
 The wizard file is bundled with this plugin at `references/onboarding-wizard.html`. Copy it to the user's Cowork folder as `onboarding-wizard.html`, then call `present_files` with that path. This opens the wizard in the right panel of Claude Desktop.
 
-After calling `present_files`, greet the user briefly in the chat: "Welcome to Fountain OS. The setup wizard is open in the right panel. It will guide you through each step, and I'll work through the setup questions here in the chat. Let's get started."
+After calling `present_files`, say one short line in the chat: "Welcome to Fountain OS. Your setup guide is open on the right — work through the steps there. I'll be setting things up in the background and will check in when I need something from you."
+
+Do not ask any questions yet. Do not narrate what you're doing. Let the wizard be the primary UI.
 
 ### Step 2: Verify Google Drive connection
 
