@@ -1,0 +1,8 @@
+{
+    "name": "fountain-os",
+    "version": "0.1.0",
+    "description": "Core skills for the Fountain OS platform: triage, reflect, onboarding, and task setup",
+    "author": {
+          "name": "Fountain"
+    }
+}
