@@ -283,60 +283,6 @@
     color: rgba(235,228,206,0.9);
   }
 
-  /* Nav buttons */
-  .left-nav {
-    padding: 14px 20px 20px;
-    border-top: 1px solid var(--border);
-    display: flex;
-    gap: 10px;
-    flex-shrink: 0;
-  }
-
-  .btn {
-    height: 38px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    transition: opacity 0.15s, background 0.15s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-  }
-
-  .btn:disabled {
-    opacity: 0.35;
-    cursor: default;
-  }
-
-  .btn-back {
-    width: 80px;
-    background: var(--border);
-    color: var(--navy);
-    flex-shrink: 0;
-  }
-
-  .btn-back:hover:not(:disabled) {
-    background: #ccc9be;
-  }
-
-  .btn-next {
-    flex: 1;
-    background: var(--navy);
-    color: var(--cream);
-  }
-
-  .btn-next:hover:not(:disabled) {
-    background: #1a2850;
-  }
-
-  .btn-next.finish {
-    background: #1a7a40;
-    color: #fff;
-  }
-
   /* ── RIGHT PANEL ── */
   .right {
     flex: 1;
@@ -895,23 +841,13 @@
           <span class="step-check">&#10003;</span>
         </div>
         <div class="step-label-wrap">
-          <div class="step-name">You're In</div>
-          <div class="step-sub">Orientation</div>
+          <div class="step-name">Your CLAUDE.md</div>
+          <div class="step-sub">Onboard is running now</div>
         </div>
       </div>
       <div class="step-item" data-idx="1" onclick="goTo(1)">
         <div class="step-num-wrap">
           <span class="step-num">2</span>
-          <span class="step-check">&#10003;</span>
-        </div>
-        <div class="step-label-wrap">
-          <div class="step-name">Your CLAUDE.md</div>
-          <div class="step-sub">Onboard is running now</div>
-        </div>
-      </div>
-      <div class="step-item" data-idx="2" onclick="goTo(2)">
-        <div class="step-num-wrap">
-          <span class="step-num">3</span>
           <span class="step-check">&#10003;</span>
         </div>
         <div class="step-label-wrap">
@@ -922,14 +858,24 @@
 
       <div class="step-group-label">Connections</div>
 
+      <div class="step-item" data-idx="2" onclick="goTo(2)">
+        <div class="step-num-wrap">
+          <span class="step-num">3</span>
+          <span class="step-check">&#10003;</span>
+        </div>
+        <div class="step-label-wrap">
+          <div class="step-name">Download WhisperFlow</div>
+          <div class="step-sub">Voice-first input</div>
+        </div>
+      </div>
       <div class="step-item" data-idx="3" onclick="goTo(3)">
         <div class="step-num-wrap">
           <span class="step-num">4</span>
           <span class="step-check">&#10003;</span>
         </div>
         <div class="step-label-wrap">
-          <div class="step-name">Download WhisperFlow</div>
-          <div class="step-sub">Voice-first input</div>
+          <div class="step-name">Connect Gmail</div>
+          <div class="step-sub">Connect in Claude settings</div>
         </div>
       </div>
       <div class="step-item" data-idx="4" onclick="goTo(4)">
@@ -938,7 +884,7 @@
           <span class="step-check">&#10003;</span>
         </div>
         <div class="step-label-wrap">
-          <div class="step-name">Connect Gmail</div>
+          <div class="step-name">Connect Google Calendar</div>
           <div class="step-sub">Connect in Claude settings</div>
         </div>
       </div>
@@ -948,7 +894,7 @@
           <span class="step-check">&#10003;</span>
         </div>
         <div class="step-label-wrap">
-          <div class="step-name">Connect Google Calendar</div>
+          <div class="step-name">Connect Slack</div>
           <div class="step-sub">Connect in Claude settings</div>
         </div>
       </div>
@@ -958,7 +904,7 @@
           <span class="step-check">&#10003;</span>
         </div>
         <div class="step-label-wrap">
-          <div class="step-name">Connect Slack</div>
+          <div class="step-name">Connect Notion (if you use it)</div>
           <div class="step-sub">Connect in Claude settings</div>
         </div>
       </div>
@@ -968,8 +914,8 @@
           <span class="step-check">&#10003;</span>
         </div>
         <div class="step-label-wrap">
-          <div class="step-name">Connect Notion (if you use it)</div>
-          <div class="step-sub">Connect in Claude settings</div>
+          <div class="step-name">Set Up Granola</div>
+          <div class="step-sub">Download and set up</div>
         </div>
       </div>
       <div class="step-item" data-idx="8" onclick="goTo(8)">
@@ -978,23 +924,13 @@
           <span class="step-check">&#10003;</span>
         </div>
         <div class="step-label-wrap">
-          <div class="step-name">Set Up Granola</div>
-          <div class="step-sub">Download and set up</div>
+          <div class="step-name">Configure Task Sync</div>
+          <div class="step-sub">Type task-setup</div>
         </div>
       </div>
       <div class="step-item" data-idx="9" onclick="goTo(9)">
         <div class="step-num-wrap">
           <span class="step-num">10</span>
-          <span class="step-check">&#10003;</span>
-        </div>
-        <div class="step-label-wrap">
-          <div class="step-name">Configure Task Sync</div>
-          <div class="step-sub">Type task-setup</div>
-        </div>
-      </div>
-      <div class="step-item" data-idx="10" onclick="goTo(10)">
-        <div class="step-num-wrap">
-          <span class="step-num">11</span>
           <span class="step-check">&#10003;</span>
         </div>
         <div class="step-label-wrap">
@@ -1005,14 +941,24 @@
 
       <div class="step-group-label">Daily Rhythm</div>
 
+      <div class="step-item" data-idx="10" onclick="goTo(10)">
+        <div class="step-num-wrap">
+          <span class="step-num">11</span>
+          <span class="step-check">&#10003;</span>
+        </div>
+        <div class="step-label-wrap">
+          <div class="step-name">Triage</div>
+          <div class="step-sub">Start of every session</div>
+        </div>
+      </div>
       <div class="step-item" data-idx="11" onclick="goTo(11)">
         <div class="step-num-wrap">
           <span class="step-num">12</span>
           <span class="step-check">&#10003;</span>
         </div>
         <div class="step-label-wrap">
-          <div class="step-name">Triage</div>
-          <div class="step-sub">Start of every session</div>
+          <div class="step-name">Reflect</div>
+          <div class="step-sub">End of every session</div>
         </div>
       </div>
       <div class="step-item" data-idx="12" onclick="goTo(12)">
@@ -1021,8 +967,8 @@
           <span class="step-check">&#10003;</span>
         </div>
         <div class="step-label-wrap">
-          <div class="step-name">Reflect</div>
-          <div class="step-sub">End of every session</div>
+          <div class="step-name">Your First Project</div>
+          <div class="step-sub">Build your first workspace</div>
         </div>
       </div>
       <div class="step-item" data-idx="13" onclick="goTo(13)">
@@ -1031,17 +977,13 @@
           <span class="step-check">&#10003;</span>
         </div>
         <div class="step-label-wrap">
-          <div class="step-name">Your First Project</div>
-          <div class="step-sub">Build your first workspace</div>
+          <div class="step-name">You’re In</div>
+          <div class="step-sub">Orientation</div>
         </div>
       </div>
 
 </div><!-- /step-list -->
 
-    <div class="left-nav">
-      <button class="btn btn-back" id="btn-back" onclick="goBack()" disabled>&#8592; Back</button>
-      <button class="btn btn-next" id="btn-next" onclick="goNext()">Next &#8594;</button>
-    </div>
   </div>
 
   <!-- RIGHT -->
@@ -1058,64 +1000,13 @@
     /* 0 */
     {
       num: "01",
-      type: "intro",
       badge: "Setup · Step 1 of 14",
-      title: "You're In",
-      tip: null,
-      substeps: [
-        {
-          label: "You're already set up",
-          detail: "Claude Desktop is installed, the Fountain OS plugin is active, and Google Drive is connected. The <strong>onboard</strong> skill is running right now in the chat panel on your left — it is reading shared team context from Drive and will ask you a few questions to build your personal CLAUDE.md file. Read this orientation first, then switch to the chat and work through onboard's questions. When it confirms your CLAUDE.md is written, come back here and continue to step 2.",
-          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
-        },
-        {
-          label: "What Fountain OS is",
-          detail: "Fountain OS is built on Claude Cowork. It has AI chatbot functionality but it's a system built for action. It pulls tasks from your conversations and completes work once you define your workflows. It turns any repeated process into a one-word command. It allows the team to maintain a shared knowledge base.",
-          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
-        },
-        {
-          label: "Memory and Compounding",
-          detail: "AI chatbots start with blank context. Even with AI chatbot “projects,” memory is spotty and output is therefore inconsistent. Fountain OS is different. It uses Claude Cowork infrastructure to manage context reliably. Your role, your team, and your decisions live in a file called <code>CLAUDE.md</code>. The system reads it automatically at the start of every session. It remembers what matters. Each time you use Fountain OS, you should focus on shaping and improving and updating it. Over time, you should incorporate more and more of your workflows into Fountain OS. Work productivity will compound.",
-          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
-        },
-        {
-          label: "Skills: Repeatable Workflows",
-          detail: "A “skill” is Claude's expression for bundling a complex, multi-step process. Multi-step workflows are reduced to one or two commands. You can mix and match multiple skills depending on the task. Once a skill is built, you never need to explain that process again, but you can revise and improve skills at any time just by describing it and asking for the change to be committed to memory.",
-          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
-        },
-        {
-          label: "Talk, don't type",
-          detail: "This onboarding wizard will direct you to download WhisperFlow, a voice-to-text app. Talking is 2-3x faster than typing, but the bigger gain is subtler: when you type, you self-edit and trim context. Speaking naturally gives Claude the full picture it needs.<br><ul><li><strong>Engage like you're talking to a high-level chief of staff.</strong> Think out loud, give full context, challenge the response: \"that option sounds better but I'm concerned about X; what are the relative downsides compared to Y?\"</li><li><strong>Don't accept the first \"I can't do that.\"</strong> Say \"I want you to find a way\" or similar. Push back before accepting a limitation.</li><li><strong>If it says something requires manual steps, push back.</strong> Ask what it can do instead. Manual steps are often avoidable.</li><li><strong>Pushing back won't always get a better result, but often it does.</strong> It's worth the extra prompt.</li><li><strong>Claude's capabilities are expanding constantly.</strong> Something that required manual steps last month may be fully automatable now. Always test the limits.</li><li><strong>Always correct the system explicitly when it's wrong.</strong> Say what was wrong and what to do instead. Every clear correction gets saved to your memory file and applied at the start of every future session. The more precisely you correct it, the less you'll ever need to again.</li></ul>",
-          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
-        },
-        {
-          label: "How the Team Stays in Sync",
-          detail: "The more foundational of the two is the shared Google Drive folder. This is the actual team knowledge base, the part of Fountain OS that lives at the company level rather than on any individual machine. Company context, vendor relationships, project specs, and non-clinical reference data all live here. Every team member pulls from the same source, so the system's understanding of the organization stays consistent across the team.<br><br>The other mechanism is a dedicated Slack channel. Cowork is developing fast and new capabilities are showing up constantly. The channel is where we share what's working: skills we've built, workflows worth replicating, anything worth passing on. If you figure something out, post it. The goal is to stay collectively on the leading edge rather than each person working in isolation.",
-          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
-        },
-        {
-          label: "PHI Boundary",
-          detail: "Fountain OS is for operational and strategic work only. Do not enter patient PHI. Clinical documentation must stay in clinical systems.",
-          note: true, link: null, linkLabel: null, copyId: null, copyLabel: null
-        },
-        {
-          label: "Ready to continue",
-          detail: "Once you've finished reading this orientation, click <strong>Mark done</strong> below and move on to step 2.",
-          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
-        }
-      ]
-    },
-
-    /* 1 */
-    {
-      num: "02",
-      badge: "Setup · Step 2 of 14",
       title: "Your CLAUDE.md",
       tip: "Answer Claude's questions in the chat. Come back here when it confirms your file is written.",
       substeps: [
         {
           label: "Onboard is running in the chat right now",
-          detail: "Switch to the left panel — Claude is asking you questions. Answer them. It will read shared team context from Google Drive, then interview you about your role, your collaborators, your recurring meetings, and how you work. The whole thing takes about 5 minutes.",
+          detail: "In the left panel, Claude is asking you questions. Answer them. It will read shared team context from Google Drive, then interview you about your role, your collaborators, your recurring meetings, and how you work. The whole thing takes about 5 minutes.",
           note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
         },
         {
@@ -1131,10 +1022,10 @@
       ]
     },
 
-    /* 2 */
+    /* 1 */
     {
-      num: "03",
-      badge: "Setup · Step 3 of 14",
+      num: "02",
+      badge: "Setup · Step 2 of 14",
       title: "Organize Your Workspace",
       tip: "Your Cowork folder is your permanent workspace root — always open Cowork sessions pointing to it, never a subfolder",
       substeps: [
@@ -1156,10 +1047,10 @@
       ]
     },
 
-    /* 3 */
+    /* 2 */
     {
-      num: "04",
-      badge: "Connections · Step 4 of 14",
+      num: "03",
+      badge: "Connections · Step 3 of 14",
       title: "Download WhisperFlow",
       tip: "Speaking is 2 to 3x faster than typing — and more useful, because you stop editing yourself. Unfiltered context produces better responses.",
       substeps: [
@@ -1183,14 +1074,19 @@
           detail: "Click into any text field — Claude, Slack, Notes — hold Option, speak naturally, release. The text appears. You do not need to edit or correct yourself mid-sentence; just speak your full thought.",
           link: null, linkLabel: null, note: false, copyId: null, copyLabel: null
         },
+        {
+          label: "Talk, don’t type",
+          detail: "Talking is 2 to 3x faster than typing, but the bigger gain is subtler: when you type, you self-edit and trim context. Speaking naturally gives Claude the full picture it needs.<br><ul><li><strong>Engage like you’re talking to a high-level chief of staff.</strong> Think out loud, give full context, challenge the response: \"that option sounds better but I’m concerned about X; what are the relative downsides compared to Y?\"</li><li><strong>Don’t accept the first \"I can’t do that.\"</strong> Say \"I want you to find a way\" or similar. Push back before accepting a limitation.</li><li><strong>If it says something requires manual steps, push back.</strong> Ask what it can do instead. Manual steps are often avoidable.</li><li><strong>Pushing back won’t always get a better result, but often it does.</strong> It’s worth the extra prompt.</li><li><strong>Claude’s capabilities are expanding constantly.</strong> Something that required manual steps last month may be fully automatable now. Always test the limits.</li><li><strong>Always correct the system explicitly when it’s wrong.</strong> Say what was wrong and what to do instead. Every clear correction gets saved to your memory file and applied at the start of every future session. The more precisely you correct it, the less you’ll ever need to again.</li></ul>",
+          link: null, linkLabel: null, note: false, copyId: null, copyLabel: null
+        }
 
       ]
     },
 
-    /* 4 */
+    /* 3 */
     {
-      num: "05",
-      badge: "Connections · Step 5 of 14",
+      num: "04",
+      badge: "Connections · Step 4 of 14",
       title: "Connect Gmail",
       tip: "Read-only; Claude drafts replies but you always send them yourself",
       substeps: [
@@ -1233,10 +1129,10 @@
       ]
     },
 
-    /* 5 */
+    /* 4 */
     {
-      num: "06",
-      badge: "Connections · Step 6 of 14",
+      num: "05",
+      badge: "Connections · Step 5 of 14",
       title: "Connect Google Calendar",
       tip: "Helpful for triage and meeting prep; cannot create or modify calendar events",
       substeps: [
@@ -1269,10 +1165,10 @@
       ]
     },
 
-    /* 6 */
+    /* 5 */
     {
-      num: "07",
-      badge: "Connections · Step 7 of 14",
+      num: "06",
+      badge: "Connections · Step 6 of 14",
       title: "Connect Slack",
       tip: "Two-way: Claude surfaces Slack threads during triage, and you can send DMs or channel messages directly from Claude without opening Slack. Messages appear in Slack as normal. Works for individuals and groups.",
       substeps: [
@@ -1310,10 +1206,10 @@
       ]
     },
 
-    /* 7 */
+    /* 6 */
     {
-      num: "08",
-      badge: "Connections · Step 8 of 14",
+      num: "07",
+      badge: "Connections · Step 7 of 14",
       title: "Connect Notion (if you use it)",
       tip: "Read-only access to your Notion pages. Useful for drafting, research, and policy questions. If Notion is not part of your workflow, skip this step.",
       substeps: [
@@ -1347,10 +1243,10 @@
       ]
     },
 
-    /* 8 */
+    /* 7 */
     {
-      num: "09",
-      badge: "Connections · Step 9 of 14",
+      num: "08",
+      badge: "Connections · Step 8 of 14",
       title: "Set Up Granola",
       tip: "Granola is the memory of every meeting. Once running, it captures every call automatically. The more meetings it has processed, the more useful this platform becomes.",
       substeps: [
@@ -1398,10 +1294,10 @@
       ]
     },
 
-    /* 9 */
+    /* 8 */
     {
-      num: "10",
-      badge: "Connections · Step 10 of 14",
+      num: "09",
+      badge: "Connections · Step 9 of 14",
       title: "Configure Task Sync",
       tip: "This is the step most people skip; triage depends on it",
       substeps: [
@@ -1418,10 +1314,10 @@
       ]
     },
 
-    /* 10 */
+    /* 9 */
     {
-      num: "11",
-      badge: "Connections · Step 11 of 14",
+      num: "10",
+      badge: "Connections · Step 10 of 14",
       title: "Install Claude in Chrome",
       tip: "Adds Claude directly to your browser for web research, form filling, and page summarization",
       substeps: [
@@ -1438,10 +1334,10 @@
       ]
     },
 
-    /* 11 */
+    /* 10 */
     {
-      num: "12",
-      badge: "Daily Rhythm · Step 12 of 14",
+      num: "11",
+      badge: "Daily Rhythm · Step 11 of 14",
       title: "Triage",
       tip: "Triage is how you start every session. Type it once to get oriented, then work through the list. Type it again any time you want a fresh picture.",
       substeps: [
@@ -1468,10 +1364,10 @@
       ]
     },
 
-    /* 12 */
+    /* 11 */
     {
-      num: "13",
-      badge: "Daily Rhythm · Step 13 of 14",
+      num: "12",
+      badge: "Daily Rhythm · Step 12 of 14",
       title: "Reflect",
       tip: "Every session that ends with reflect leaves the system smarter than it found it. This is the habit everything else depends on.",
       substeps: [
@@ -1503,10 +1399,10 @@
       ]
     },
 
-    /* 13 */
+    /* 12 */
     {
-      num: "14",
-      badge: "Daily Rhythm · Step 14 of 14",
+      num: "13",
+      badge: "Daily Rhythm · Step 13 of 14",
       title: "Your First Project",
       tip: "Takes 5 minutes, pays back every week",
       substeps: [
@@ -1524,6 +1420,52 @@
           label: "Copy and paste this prompt into Claude to configure it",
           detail: "Copy the prompt below and paste it into a new Claude session with your Cowork folder selected. Claude will ask you a few questions and save a context file that permanently gives it background for this task type.",
           link: null, linkLabel: null, copyId: "first_project", copyLabel: "Copy and paste this prompt into Claude"
+        }
+      ]
+    },
+
+    /* 13 */
+    {
+      num: "14",
+      type: "intro",
+      badge: "Daily Rhythm · Step 14 of 14",
+      title: "You’re In",
+      tip: null,
+      substeps: [
+        {
+          label: "What Fountain OS is",
+          detail: "Fountain OS is built on Claude Cowork. It has AI chatbot functionality but it’s a system built for action. It pulls tasks from your conversations and completes work once you define your workflows. It turns any repeated process into a one-word command. It allows the team to maintain a shared knowledge base.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Memory and Compounding",
+          detail: "AI chatbots start with blank context. Even with AI chatbot \"projects,\" memory is spotty and output is therefore inconsistent. Fountain OS is different. It uses Claude Cowork infrastructure to manage context reliably. Your role, your team, and your decisions live in a file called <code>CLAUDE.md</code>. The system reads it automatically at the start of every session. It remembers what matters. Each time you use Fountain OS, focus on shaping and improving it. Over time, incorporate more and more of your workflows. Work productivity will compound.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Skills: Repeatable Workflows",
+          detail: "A \"skill\" is Claude’s expression for bundling a complex, multi-step process. Multi-step workflows are reduced to one or two commands. You can mix and match multiple skills depending on the task. Once a skill is built, you never need to explain that process again, but you can revise and improve skills at any time just by describing it and asking for the change to be committed to memory.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "The multi-project advantage",
+          detail: "The most powerful thing I’ve discovered is that when multiple projects are in Cowork, you can involve any of them seamlessly in any chat. Here is how that works in practice: while going through my tasks, one item pulled from a Granola transcript was a question about our workers’ comp policy. Since I have a separate ‘Legal’ project, I replied in the chat asking if we had any legal document language on the topic, and it was delivered immediately. Another time, a task came up about a change needed in the HRT Heidi transcripts. Since ‘Heidi transcripts’ is another project I had already set up in Cowork, I responded in the same chat with the change I wanted and it was executed without switching platforms.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "Talk, don’t type",
+          detail: "WhisperFlow is installed and ready. Use it. Talking is 2 to 3x faster than typing, but the bigger gain is subtler: when you type, you self-edit and trim context. Speaking naturally gives Claude the full picture it needs.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "How the Team Stays in Sync",
+          detail: "The more foundational of the two is the shared Google Drive folder. This is the actual team knowledge base, the part of Fountain OS that lives at the company level rather than on any individual machine. Company context, vendor relationships, project specs, and non-clinical reference data all live here. Every team member pulls from the same source, so the system’s understanding of the organization stays consistent across the team.<br><br>The other mechanism is a dedicated Slack channel. Cowork is developing fast and new capabilities are showing up constantly. The channel is where we share what’s working: skills we’ve built, workflows worth replicating, anything worth passing on. If you figure something out, post it. The goal is to stay collectively on the leading edge rather than each person working in isolation.",
+          note: false, link: null, linkLabel: null, copyId: null, copyLabel: null
+        },
+        {
+          label: "PHI Boundary",
+          detail: "Fountain OS is for operational and strategic work only. Do not enter patient PHI. Clinical documentation must stay in clinical systems.",
+          note: true, link: null, linkLabel: null, copyId: null, copyLabel: null
         }
       ]
     }
@@ -1593,17 +1535,6 @@
           `<button class="step-action-btn${stepState === 'done' ? ' marked-done' : ''}" onclick="markStep(${current},'done')">${stepState === 'done' ? '&#10003; Done &nbsp;&middot;&nbsp; Undo' : '&#10003; Mark done'}</button>`;
         activeItem.insertAdjacentElement('afterend', actionsDiv);
       }
-    }
-
-    // Buttons
-    document.getElementById('btn-back').disabled = current === 0;
-    const nextBtn = document.getElementById('btn-next');
-    if (current === total - 1) {
-      nextBtn.innerHTML = '&#10003; All done!';
-      nextBtn.className = 'btn btn-next finish';
-    } else {
-      nextBtn.innerHTML = 'Next &#8594;';
-      nextBtn.className = 'btn btn-next';
     }
 
     // Right content
@@ -1774,29 +1705,7 @@
     render();
   }
 
-  function goNext() {
-    if (current < STEPS.length - 1) {
-      goTo(current + 1);
-    } else {
-      // Show done screen
-      const right = document.getElementById('right-content');
-      right.innerHTML = buildContent({ _done: true });
-      document.querySelectorAll('.step-item').forEach(el => el.classList.add('done'));
-      document.getElementById('btn-next').disabled = true;
-      document.getElementById('progress-fill').style.width = '100%';
-      document.getElementById('progress-frac').textContent = 'Complete!';
-    }
-  }
 
-  function goBack() {
-    if (current > 0) goTo(current - 1);
-  }
-
-  // Keyboard nav
-  document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goNext();
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goBack();
-  });
 
   // ── SVG ILLUSTRATIONS ──
 
