@@ -27,7 +27,11 @@ Note: formatting and behavioral corrections are captured automatically by the al
 
 Skip short or routine sessions where nothing substantive occurred.
 
-### Step 2: Propose atomic updates
+### Step 2: Unsaved work check
+
+Scan the conversation for any files Claude created or modified during this session. Check whether each was committed or, in a worktree, copied to the main repository. If any uncommitted session work is found, list the files and ask whether they should be saved or discarded. If none, skip silently.
+
+### Step 3: Propose atomic updates
 
 Present proposed updates as a batch with a single yes/no. Use this format:
 
@@ -44,7 +48,7 @@ Approve all? (yes / skip individual items)
 
 Each update must be atomic: one clear action per item. Do not bundle multiple changes into one item.
 
-### Step 3: Flag team-relevant updates
+### Step 4: Flag team-relevant updates
 
 For any proposed update that is team-relevant rather than purely personal, flag it separately after the batch:
 
@@ -56,7 +60,7 @@ Team-relevant examples: project status changed, cross-functional decision made, 
 
 NOT team-relevant: personal task preferences, individual workflow tweaks, single-person workstream updates, Doron-specific context.
 
-### Step 4: Apply approved updates
+### Step 5: Apply approved updates
 
 When the user approves, write to the appropriate memory files. Update `memory/METADATA.md` timestamps for any file touched. Match the existing file structure and writing style — do not reformat files.
 
@@ -74,7 +78,7 @@ Begin reflect automatically (without waiting for the user to type "reflect") whe
 Read `memory/lessons.md` if it exists. Look for:
 
 - Duplicate rules that say the same thing in different words — merge them
-- Rules that have been consistently followed and are now habitual — promote them to CLAUDE.md proper (propose as an atomic update in Step 2)
+- Rules that have been consistently followed and are now habitual — promote them to CLAUDE.md proper (propose as an atomic update in Step 3)
 - Rules that turned out to be wrong or outdated — flag for removal
 
 This is cleanup only. Reflect does not capture corrections — those are written to lessons.md inline, immediately when they happen, without any command.
